@@ -1,4 +1,4 @@
-function trl = rc_trialfun(cfg)
+function trl = rc_trialfun_2021(cfg)
 % You need to change this function in a way that it spits out a variable
 % 'trl' that contains one row per trial and at least three colums. See more
 % info here:
