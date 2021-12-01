@@ -15,13 +15,13 @@ function trl = rc_trialfun_2021(cfg)
 % cfg.trialdef.pre_end			int; how much before the off trigger should we start (in sec)
 % cfg.dataset                   string; path to dataset
 % cfg.hypnogram					string; path to hypnogram
-% epoch_length_sec		= 30;       % length of epochs in hypnogram in s
+% cfg.epoch_length_sec		= 30;       % length of epochs in hypnogram in s
 
 %% Load and check data
 hdr                 = ft_read_header(cfg.dataset);
 events              = ft_read_event(cfg.dataset);
 hyp					= load_hypnogram(cfg.hypnogram);
-epoch_length_smpl	= epoch_length_sec * hdr.Fs;
+epoch_length_smpl	= cfg.epoch_length_sec * hdr.Fs;
 
 % Deal with manual and odor triggers
 trigger_recstart    = events(strcmp('epoch', {events.type}));

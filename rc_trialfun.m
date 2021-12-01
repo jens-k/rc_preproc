@@ -15,7 +15,7 @@ function trl = rc_trialfun(cfg)
 % cfg.trialdef.pre_end			int; how much before the off trigger should we start (in sec)
 % cfg.dataset                   string; path to dataset
 % cfg.hypnogram					string; path to hypnogram
-% epoch_length_sec		= 30;       % length of epochs in hypnogram in s
+epoch_length_sec		= 30;       % length of epochs in hypnogram in s
 
 %% Load and check data
 hdr                 = ft_read_header(cfg.dataset);
