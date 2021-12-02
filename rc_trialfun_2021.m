@@ -1,25 +1,13 @@
 function trl = rc_trialfun_2021(cfg)
-% You need to change this function in a way that it spits out a variable
-% 'trl' that contains one row per trial and at least three colums. See more
-% info here:
-% https://www.fieldtriptoolbox.org/example/making_your_own_trialfun_for_conditional_trial_definition/
-%
-% You can add further columns to the trl output, these will then later be
-% represented in the data as a field .trialinfo
-% More info here:
-% https://www.fieldtriptoolbox.org/faq/is_it_possible_to_keep_track_of_trial-specific_information_in_my_fieldtrip_analysis_pipeline/
+%% --------------------------------------------------------------
+% Trial function inside
+%%---------------------------------------------------------------
 
-%% MY OLD TRIAL FUNCTION
-% Requires these inputs
-% cfg.trialdef.post_start       int; how much after the on trigger should we start (in sec)
-% cfg.trialdef.pre_end			int; how much before the off trigger should we start (in sec)
-% cfg.dataset                   string; path to dataset
-% cfg.hypnogram					string; path to hypnogram
-% cfg.epoch_length_sec		= 30;       % length of epochs in hypnogram in s
+% Load and check data
 
-%% Load and check data
-hdr                 = ft_read_header(cfg.dataset);
-events              = ft_read_event(cfg.dataset);
+hdr         = ft_read_header(cfg.dataset);
+events      = ft_read_event(cfg.dataset);
+
 hyp					= load_hypnogram(cfg.hypnogram);
 epoch_length_smpl	= cfg.epoch_length_sec * hdr.Fs;
 
@@ -43,60 +31,114 @@ end
 
 % Sanity checks on the triggers
 if numel(trigger_recstart) ~= 1
-	warning('There are more than one EGI recording start triggers in this dataset. You might want to double-check (%s, counter %s).\n', cfg.id, num2str(cfg.counter))
+	warning('There are more than one EGI recording start triggers in this dataset. You might want to double-check')
 end
 if numel(trigger_start) ~= 1 || numel(trigger_end) ~= 1
-	warning('Unexpected number of lights on / off triggers. (%s, counter %s).\n', cfg.id, num2str(cfg.counter))
+	warning('Unexpected number of lights on / off triggers')
 end
 if numel(trigger_on) ~=  numel(trigger_off)
-	warning('Unequal number of odor on and off triggers (DIN1/2). (%s, counter %s).\n', cfg.id, num2str(cfg.counter))
+	warning('Unequal number of odor on and off triggers (DIN1/2)')
 end
 
 % Did we identify all triggers?
 if numel(trigger_recstart) + numel(trigger_start) + numel(trigger_end) + numel(trigger_on) + numel(trigger_off) + numel(trigger_tests) + numel(trigger_misc) ~= numel(events)
-	warning('Some events could not be identified (%s, counter %s).\n', cfg.id, num2str(cfg.counter))
+	warning('Some events could not be identified')
 end
 
+%% Specific sanity checks to store in table
 
-%% DO THE ACTUAL TRIAL CUTTING HERE
+% Create new structure as copy of the original events
+Events = events;
 
-% define the trl variable here (Accoridng to script or links above)
+% Remove fields of the structure that are not relevant
+Events = rmfield(Events, ...
+    {'value','offset','begintime','classid','code','duration','name','relativebegintime',...
+    'sourcedevice','type','tracktype','mffkeys','tracktype'});
+
+% Remove the events that appear to be empty
+cidx_all                                = {Events.mffkey_cidx};
+Events(cellfun('isempty',cidx_all))     = [];
+
+%% Identify sleep stage and add to table
+
+column_of_interest  = 1;        % Which column contains the scoring values
+
+v_sleepStages       = hyp(:,column_of_interest);
+
+% Get latencies vector in seconds
+latencies_scoring = [Events.sample]/hdr.Fs;
+
+% Divide latencies by 30 seconds, to identify in which sleep scoring block
+% they are
+latencies_scoring = floor(latencies_scoring/30);
+
+sleepStage = num2cell(v_sleepStages(latencies_scoring));
+
+[Events.SleepStage] = sleepStage{:};
+
+%% Assigning the stimulation type (ODOR/VEHICLE/OFF) in the table
 
 
-%% ANOTHER EXAMPLE TRIAL FUNCTION
-% Here is another example trial function taken from here:
-% https://www.fieldtriptoolbox.org/tutorial/preprocessing/#use-your-own-function-for-trial-selection
+StimulationTypes = {Events.label};
+cidx_all         = {Events.mffkey_cidx};
+cidx_all         = cellfun(@str2double,cidx_all);
 
-% this function requires the following fields to be specified
-% cfg.dataset
-% cfg.trialdef.eventtype
-% cfg.trialdef.eventvalue
-% cfg.trialdef.prestim
-% cfg.trialdef.poststim
+StimulationTypes(mod(cidx_all,2)==1) = {'ODOR'};
+StimulationTypes(mod(cidx_all,2)==0) = {'VEHICLE'};
 
-hdr   = ft_read_header(cfg.dataset);
-event = ft_read_event(cfg.dataset);
+StimulationTypes(strcmp({Events.label},'DIN2')) = {'OFF'};
 
-trl = [];
+[Events.stimulation] = StimulationTypes{:};
 
-for i=1:length(event)
-	if strcmp(event(i).type, cfg.trialdef.eventtype)
-		% it is a trigger, see whether it has the right value
-		if ismember(event(i).value, cfg.trialdef.eventvalue)
-			% add this to the trl definition
-			begsample     = event(i).sample - cfg.trialdef.prestim*hdr.Fs;
-			endsample     = event(i).sample + cfg.trialdef.poststim*hdr.Fs - 1;
-			offset        = -cfg.trialdef.prestim*hdr.Fs;
-			trigger       = event(i).value; % remember the trigger (=condition) for each trial
-			if isempty(trl)
-				prevtrigger = nan;
-			else
-				prevtrigger   = trl(end, 4); % the condition of the previous trial
-			end
-			trl(end+1, :) = [round([begsample endsample offset])  trigger prevtrigger];
-		end
-	end
+%% Calculate distance to next trigger and add to table
+
+LatencyDiff = [Events(2:end).sample]- [Events(1:end-1).sample];
+LatencyDiff = round([LatencyDiff 0]/hdr.Fs);
+LatencyDiff = num2cell(LatencyDiff);
+
+[Events.Distance2NextTrigger] = LatencyDiff{:};
+
+%% --------------------------------------------------------------
+% Reject for different reasons and add to table
+%--------------------------------------------------------------
+clear will_be_rejected
+
+for event = 1:numel(Events)
+    
+    will_be_rejected(event) = 0;
+    Reason = '';
+    
+    % For each event, check whether it occurs exactly twice (start/end)
+    if sum(strcmp({Events.mffkey_cidx},Events(event).mffkey_cidx)) ~= 2
+        will_be_rejected = 1;
+        Reason = 'No start and end';
+        
+        % ...whether the Stimulation period is about 15 s long
+    elseif event < numel(Events) && (Events(event+1).sample - Events(event).sample ...
+            < 15 * hdr.Fs)
+        will_be_rejected(event) = 1;
+        Reason = 'too short';
+    end
+    
+    if strcmp(Events(event).stimulation,'OFF')
+        will_be_rejected(event) = 1;
+        Reason = 'OFF Period';
+    end
+    
+    ReasonforRejection{event}=Reason;
+    
 end
 
-samecondition = trl(:,4)==trl(:,5); % find out which trials were preceded by a trial of the same condition
-trl(samecondition,:) = []; % delete those trials
+will_be_rejected_cell   = num2cell(will_be_rejected);
+[Events.Rejected]       = will_be_rejected_cell{:};
+
+[Events.ReasonForRejection] = ReasonforRejection{:};
+
+Table = struct2table(Events);
+
+warning('off','MATLAB:xlswrite:AddSheet'); %optional
+writetable(Table,'Events_RC.xlsx','Sheet',cfg.counter);
+
+%% Trials that are selected 
+
+trl = Events(~will_be_rejected);
