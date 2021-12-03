@@ -79,7 +79,7 @@ cfg_art.artfctdef.zvalue.bpfilttype  = 'but';
 cfg_art.artfctdef.zvalue.hilbert     = 'yes';         % ?
 cfg_art.artfctdef.zvalue.boxcar      = 0.2;           % ?
 cfg_art.artfctdef.zvalue.interactive = 'yes';
-cfg_art                 = ft_artifact_zvalue(cfg_art);
+cfg_art                              = ft_artifact_zvalue(cfg_art);
 
 % There is also the one from here: 
 % https://www.fieldtriptoolbox.org/tutorial/visual_artifact_rejection/#manual-artifact-rejection---display-a-summary
