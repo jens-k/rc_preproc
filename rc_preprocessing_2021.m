@@ -19,7 +19,7 @@ cfg						= [];
 cfg.dataformat          = 'egi_mff_v2'; 
 cfg.headerformat        = 'egi_mff_v2';
 cfg.dataset             = fullfile(paths.data, 'RC_121_sleep.mff');%Doing now with subject 12, session 1
-cfg.trialdef.pre		= -5; % all the .trialdef fields are just forwarded to the cfg.trialfun
+cfg.trialdef.pre		= 5; % all the .trialdef fields are just forwarded to the cfg.trialfun
 cfg.trialdef.post	    = 15;
 cfg.epoch_length_sec    = 30;
 cfg.hypnogram			= fullfile(paths.sl_hypnograms,'s12_n1.txt');%Doing now with subject 12, session 1
@@ -80,6 +80,6 @@ cfg_db.blocksize       = 30;
 cfg_db.ylim            = [-120 120];
 cfg_db.selectmode      = 'markartifact';
 cfg_db.artfctdef	   = arts.artfctdef;
-cfg_art                = ft_databrowser(cfg_db);
+cfg_db                 = ft_databrowser(cfg_db);
 
 %save(cfg_art, path_artifactdef);

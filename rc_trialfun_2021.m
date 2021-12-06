@@ -50,10 +50,12 @@ end
 % Create new structure as copy of the original events
 Events = events;
 
-% Remove fields of the structure that are not relevant
+% Remove fields of the structure that are not relevant.
+
 Events = rmfield(Events, ...
-    {'value','offset','begintime','classid','code','duration','name','relativebegintime',...
+    {'value','duration','begintime','classid','code','name','relativebegintime',...
     'sourcedevice','type','tracktype','mffkeys','tracktype'});
+
 
 % Remove the events that appear to be empty
 cidx_all                                = {Events.mffkey_cidx};
@@ -141,4 +143,28 @@ writetable(Table,'Events_RC.xlsx','Sheet',cfg.counter);
 
 %% Trials that are selected 
 
-trl = Events(~will_be_rejected);
+% It is important to 
+
+%trial description looks like this:
+% 1000 2000 500 2 11
+% 3500 4500 500 2 12
+% 1000 2000 500 2 21
+% ...
+% 
+% This would be a trl structure for 3 trials, each 1000 samples long, with
+% the 0 point right in the middle. I added another column for the sleep
+% stage at the beginning of the trial and the condition (one could use a
+% code like: vehicle off period 11, vehicle on period 12, odor off period 21, odor on period 22)
+% odor 2, just as an example).
+
+% Is is important to have this trial definition as numerical values,
+% otherwise the ft_artifact_zvalue function will give problems
+
+final_trials = Events(~will_be_rejected);
+
+trl_1stColumn = [final_trials.sample]'-cfg.trialdef.pre*hdr.Fs;
+trl_2ndColumn = [final_trials.sample]'+cfg.trialdef.post*hdr.Fs;
+trl_3rdColumn = [final_trials.offset]'+cfg.trialdef.pre*hdr.Fs;
+
+trl = [trl_1stColumn,trl_2ndColumn,trl_3rdColumn];
+

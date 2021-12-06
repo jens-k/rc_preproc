@@ -101,7 +101,7 @@ cfg_db.blocksize       = 30;
 cfg_db.ylim            = [-120 120];
 cfg_db.selectmode      = 'markartifact';
 cfg_db.artfctdef	   = arts.artfctdef;
-cfg_art                = ft_databrowser(cfg_db);
+cfg_db                = ft_databrowser(cfg_db);
 
 save(cfg_art, path_artifactdef);
 
