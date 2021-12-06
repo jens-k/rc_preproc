@@ -53,11 +53,12 @@ cfg_art.artfctdef.zvalue.artpadding  = 0.4; % window around artifacts still reje
 cfg_art.artfctdef.zvalue.detrend     = 'yes';
 cfg_art.artfctdef.zvalue.bpfilter    = 'yes';
 cfg_art.artfctdef.zvalue.bpfreq      = [1 30]; % check tutorals for optimal values
-cfg_art.artfctdef.zvalue.bpfiltord   = 8;
+cfg_art.artfctdef.zvalue.bpfiltord   = 3;
 cfg_art.artfctdef.zvalue.bpfilttype  = 'but';
 cfg_art.artfctdef.zvalue.hilbert     = 'yes';         % ?
 cfg_art.artfctdef.zvalue.boxcar      = 0.2;           % ?
 cfg_art.artfctdef.zvalue.interactive = 'yes';
+cfg_art.artfctdef.zvalue.cutoff      = 6;
 cfg_art                              = ft_artifact_zvalue(cfg_art);
 
 % There is also the one from here: 
