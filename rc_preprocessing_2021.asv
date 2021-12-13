@@ -59,7 +59,7 @@ cfg_bchan{subj} .metric        = 'zvalue';
 cfg_bchan{subj} .channel       = channels_wo_face;
 cfg_bchan{subj} .threshold     = 6;
 
-cfg_bchan{subj}                = ft_badchannel(cfg_bchan{subj},data_preproc);
+cfg_bchan{subj}                = ft_badchannel(cfg_bchan,data_preproc);
 
 end
 
