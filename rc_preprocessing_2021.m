@@ -16,9 +16,10 @@ paths.sl_hypnograms         = 'D:\Sleep\DataDownload\Hypnograms';
 files = dir(strcat(paths.data,filesep,'*.mff'));
 
 %% Get trial description
+% load('D:\Sleep\DataDownload\Recordings\cfg_trial.mat')
 
-for subj = 1:numel(files)
-cnt = 1;
+
+for subj = 5:numel(files)
 
 data_filename   = files(subj).name;
 hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -31,11 +32,10 @@ cfg_trial{subj}.trialdef.post	    = 15;
 cfg_trial{subj}.epoch_length_sec    = 30;
 cfg_trial{subj}.hypnogram			= fullfile(paths.sl_hypnograms,hyp_filename);%Doing now with subject 12, session 1
 cfg_trial{subj}.trialfun            = 'rc_trialfun_2021'; % 
-%cfg.id                  = sdata(iSj).id; % unique recording ID for future reference
-cfg_trial{subj}.counter				= cnt;		% to easier find the dataset again later on
+cfg_trial{subj}.id                  = data_filename(1:6); % unique recording ID for future reference
+cfg_trial{subj}.counter				= subj;		% to easier find the dataset again later on
 cfg_trial{subj}						= ft_definetrial(cfg_trial{subj});
 
-cnt                     = cnt + 1;
 
 %% Preprocessing: filtering
 
@@ -53,13 +53,23 @@ data_preproc                          = ft_preprocessing(cfg_preproc{subj});
 
 %% Bad channels detection
 
-
 cfg_bchan{subj}                = [];
 cfg_bchan{subj} .metric        = 'zvalue';
 cfg_bchan{subj} .channel       = channels_wo_face;
-cfg_bchan{subj} .threshold     = 6;
+cfg_bchan{subj} .threshold     = 3;
 
 cfg_bchan{subj}                = ft_badchannel(cfg_bchan{subj},data_preproc);
+
+
+%% Data Visualization
+
+cfg_db                 = [];
+cfg_db.viewmode        = 'vertical';
+cfg_db.channel         = channels_wo_face;
+cfg_db.ylim            = [-120 120];
+cfg_db                 = ft_databrowser(cfg_db, data_preproc);
+
+clear data_preproc
 
 end
 
