@@ -164,7 +164,7 @@ final_trials = Events(~will_be_rejected);
 
 trl_1stColumn = round([final_trials.sample]')-cfg.trialdef.pre*hdr.Fs;
 trl_2ndColumn = round([final_trials.sample]')+cfg.trialdef.post*hdr.Fs;
-trl_3rdColumn = [final_trials.offset]'+cfg.trialdef.pre*hdr.Fs;
+trl_3rdColumn = [final_trials.offset]'-cfg.trialdef.pre*hdr.Fs;
 
 trl = [trl_1stColumn,trl_2ndColumn,trl_3rdColumn];
 

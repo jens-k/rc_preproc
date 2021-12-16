@@ -1,7 +1,7 @@
-addpath(genpath('C:\Users\asanch24\Documents\Github\rc_preproc\'))
+addpath(genpath('C:\Users\lanan\Documents\Github\rc_preproc\'))
 % ft_defaults
 
-addpath(genpath('C:\Users\asanch24\Documents\MATLAB\fieldtrip'))
+addpath(genpath('C:\Users\lanan\Documents\MATLAB\fieldtrip\'))
 %% General comments
 % I wrote this code example down there without ever running it; please
 % think of it as a broad pointer into the right direction.
@@ -19,7 +19,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 % load('D:\Sleep\DataDownload\Recordings\cfg_trial.mat')
 
 
-for subj = 5:numel(files)
+for subj = 13:numel(files)
 
 data_filename   = files(subj).name;
 hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -44,21 +44,26 @@ channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '
 % The output of ft_definetrial can be used for ft_preprocessing, so we dont
 % have to preprocess and filter the whole dataset, and we save time.
 
-cfg_preproc{subj}					  = cfg_trial{subj};
-cfg_preproc{subj}.channel             = 'all';
-cfg_preproc{subj}.bpfilter            = 'no';
-cfg_preproc{subj}.detrend             = 'yes';
+cfg_preproc                     = cfg_trial{subj};
+cfg_preproc.channel             = 'all';
+cfg_preproc.detrend             = 'yes';
+cfg_preproc.lpfilter            = 'yes';
+cfg_preproc.lpfilttype          = 'fir';
+cfg_preproc.lpfreq              = 30;
+cfg_preproc.medianfilter        = 'yes';
+cfg_preproc.medianfiltord       = 20;
 
-data_preproc                          = ft_preprocessing(cfg_preproc{subj});
+
+data_preproc                    = ft_preprocessing(cfg_preproc);
 
 %% Bad channels detection
 
-cfg_bchan{subj}                = [];
-cfg_bchan{subj} .metric        = 'zvalue';
-cfg_bchan{subj} .channel       = channels_wo_face;
-cfg_bchan{subj} .threshold     = 3;
-
-cfg_bchan{subj}                = ft_badchannel(cfg_bchan{subj},data_preproc);
+% cfg_bchan{subj}                = [];
+% cfg_bchan{subj} .metric        = 'zvalue';
+% cfg_bchan{subj} .channel       = channels_wo_face;
+% cfg_bchan{subj} .threshold     = 1;
+% 
+% cfg_bchan{subj}                = ft_badchannel(cfg_bchan{subj},data_preproc);
 
 
 %% Data Visualization
@@ -66,12 +71,25 @@ cfg_bchan{subj}                = ft_badchannel(cfg_bchan{subj},data_preproc);
 cfg_db                 = [];
 cfg_db.viewmode        = 'vertical';
 cfg_db.channel         = channels_wo_face;
-cfg_db.ylim            = [-120 120];
+cfg_db.ylim            = [-30 30];
 cfg_db                 = ft_databrowser(cfg_db, data_preproc);
 
-clear data_preproc
+% clear data_preproc
 
 end
+
+%% Focus on median filter reduction of noise
+
+cfg_spect = [];
+cfg_spect.output    = 'pow';
+cfg_spect.channel   = 'E45';
+cfg_spect.trials    = 42;
+cfg_spect.method    = 'mtmfft';
+cfg_spect.foi       = 0:0.1:30;
+cfg_spect.taper     = 'hanning';
+base_freq_b         = ft_freqanalysis(cfg_spect, data_preproc);
+
+plot(base_freq_b.freq,base_freq_b.powspctrm)
 
 
 % %% Artifact detection
