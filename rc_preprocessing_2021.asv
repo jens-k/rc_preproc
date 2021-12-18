@@ -52,7 +52,7 @@ cfg_preproc.lpfilttype          = 'fir';
 cfg_preproc.lpfreq              = 30;
 cfg_preproc.trials              = 36;
 cfg_preproc.medianfilter        = 'no';
-cfg_preproc.medianfiltord       = 40;
+cfg_preproc.medianfiltord       = 2;
 
 
 data_preproc                    = ft_preprocessing(cfg_preproc);
@@ -72,7 +72,7 @@ data_preproc                    = ft_preprocessing(cfg_preproc);
 cfg_db                 = [];
 cfg_db.viewmode        = 'vertical';
 cfg_db.channel         = {'E43', 'E44', 'E45','E46','E47'};
-cfg_db.trials          = 36;
+cfg_db.trials          = 42;
 cfg_db.ylim            = [-120 120];
 cfg_db                 = ft_databrowser(cfg_db, data_preproc);
 
@@ -83,7 +83,6 @@ end
 %% IRASA for spectrum following Jens suggestions and code
 
 cf					= [];
-cf.trials           = 36;
 cf.length			= 4;  % cut data into segments of this length (in sec)
 cf.overlap			= 0;  % with this overlap
 data_sleep_cut		= ft_redefinetrial(cf, data_preproc);
@@ -93,7 +92,7 @@ data_sleep_cut		= ft_redefinetrial(cf, data_preproc);
 cfg_spect           = [];
 cfg_spect.method	= 'irasa';
 cfg_spect.pad		= 'nextpow2';
-% cfg_spect.trials    = 36;
+cfg_spect.trials    = 36;
 cfg_spect.channel   = 'E45';
 cfg_spect.foilim    = [10 20];
 fra					= ft_freqanalysis(cfg_spect, data_sleep_cut);
@@ -114,18 +113,18 @@ cfg_temp.operation	= 'divide';
 rel					= ft_math(cfg_temp, osc, fra);
 
 % Fill output structure
-spectra_4sec_ord40_chan45          = [];
-spectra_4sec_ord40_chan45.fra      = fra.powspctrm;
-spectra_4sec_ord40_chan45.mix      = mix.powspctrm;
-spectra_4sec_ord40_chan45.osc      = osc.powspctrm;
-spectra_4sec_ord40_chan45.rel      = rel.powspctrm;
-spectra_4sec_ord40_chan45.freq     = rel.freq; % add frequency vector
+spectra_4sec_ord0_chan45          = [];
+spectra_4sec_ord0_chan45.fra      = fra.powspctrm;
+spectra_4sec_ord0_chan45.mix      = mix.powspctrm;
+spectra_4sec_ord0_chan45.osc      = osc.powspctrm;
+spectra_4sec_ord0_chan45.rel      = rel.powspctrm;
+spectra_4sec_ord0_chan45.freq     = rel.freq; % add frequency vector
 
 % Calculate spectra channel 47
 cfg_spect           = [];
 cfg_spect.method	= 'irasa';
 cfg_spect.pad		= 'nextpow2';
-% cfg_spect.trials    = 36;
+cfg_spect.trials    = 36;
 cfg_spect.channel   = 'E47';
 cfg_spect.foilim    = [10 20];
 fra					= ft_freqanalysis(cfg_spect, data_sleep_cut);
@@ -146,105 +145,52 @@ cfg_temp.operation	= 'divide';
 rel					= ft_math(cfg_temp, osc, fra);
 
 % Fill output structure
-spectra_4sec_ord40_chan47          = [];
-spectra_4sec_ord40_chan47.fra      = fra.powspctrm;
-spectra_4sec_ord40_chan47.mix      = mix.powspctrm;
-spectra_4sec_ord40_chan47.osc      = osc.powspctrm;
-spectra_4sec_ord40_chan47.rel      = rel.powspctrm;
-spectra_4sec_ord40_chan47.freq     = rel.freq; % add frequency vector
+spectra_4sec_ord0_chan47          = [];
+spectra_4sec_ord0_chan47.fra      = fra.powspctrm;
+spectra_4sec_ord0_chan47.mix      = mix.powspctrm;
+spectra_4sec_ord0_chan47.osc      = osc.powspctrm;
+spectra_4sec_ord0_chan47.rel      = rel.powspctrm;
+spectra_4sec_ord0_chan47.freq     = rel.freq; % add frequency vector
 
 
 %%
 
 figure();
 hold on;
-plot(spectra_4sec_ord0_chan45.freq, spectra_4sec_ord0_chan45.osc,'k');
-plot(spectra_4sec_ord2_chan45.freq, spectra_4sec_ord2_chan45.osc,'m');
-plot(spectra_4sec_ord10_chan45.freq, spectra_4sec_ord10_chan45.osc,'b');
-plot(spectra_4sec_ord20_chan45.freq, spectra_4sec_ord20_chan45.osc,'g');
-plot(spectra_4sec_ord30_chan45.freq, spectra_4sec_ord30_chan45.osc,'r');
-plot(spectra_4sec_ord40_chan45.freq, spectra_4sec_ord40_chan45.osc,'k');
+plot(spectra_4sec_ord0_chan45.freq, spectra_4sec_ord0_chan45.powspctrm,'k');
+plot(spectra_4sec_ord2_chan45.freq, spectra_4sec_ord2_chan45.powspctrm,'k');
+plot(spectra_4sec_ord10_chan45.freq, spectra_4sec_ord10_chan45.powspctrm,'b');
+plot(spectra_4sec_ord20_chan45.freq, spectra_4sec_ord20_chan45.powspctrm,'g');
+plot(spectra_4sec_ord30_chan45.freq, spectra_4sec_ord30_chan45.powspctrm,'r');
 
-
-title('Oscillatory channel E45')
+title('Oscillatory')
 xlabel('freq'); ylabel('power');
-legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
+legend({'''median ord 2','median ord 10','median ord 20','median ord 30'},'location','northeast');
 
 
 figure();
 hold on;
-plot(spectra_4sec_ord0_chan45.freq, spectra_4sec_ord0_chan45.fra,'k');
-plot(spectra_4sec_ord2_chan45.freq, spectra_4sec_ord2_chan45.fra,'m');
-plot(spectra_4sec_ord10_chan45.freq, spectra_4sec_ord10_chan45.fra,'b');
-plot(spectra_4sec_ord20_chan45.freq, spectra_4sec_ord20_chan45.fra,'g');
-plot(spectra_4sec_ord30_chan45.freq, spectra_4sec_ord30_chan45.fra,'r');
-plot(spectra_4sec_ord40_chan45.freq, spectra_4sec_ord40_chan45.fra,'k');
+plot(fractal_medfilt_ord10_3sec.freq, oscillatory_medfilt_ord10_3sec.powspctrm,'k');
+plot(fractal_medfilt_ord10_3sec.freq, oscillatory_medfilt_ord10_3sec.powspctrm,'b');
+plot(fractal_medfilt_ord20_3sec.freq, oscillatory_medfilt_ord20_3sec.powspctrm,'g');
+plot(fractal_medfilt_ord30_3sec.freq, oscillatory_medfilt_ord30_3sec.powspctrm,'r');
 
-
-title('Fractal channel E45')
+title('Fractal')
 xlabel('freq'); ylabel('power');
-legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
+legend({'median ord 2','median ord 10','median ord 20','median ord 30'},'location','northeast');
 
 
 figure();
 hold on;
-plot(spectra_4sec_ord0_chan45.freq, spectra_4sec_ord0_chan45.rel,'k');
-plot(spectra_4sec_ord2_chan45.freq, spectra_4sec_ord2_chan45.rel,'m');
-plot(spectra_4sec_ord10_chan45.freq, spectra_4sec_ord10_chan45.rel,'b');
-plot(spectra_4sec_ord20_chan45.freq, spectra_4sec_ord20_chan45.rel,'g');
-plot(spectra_4sec_ord30_chan45.freq, spectra_4sec_ord30_chan45.rel,'r');
-plot(spectra_4sec_ord40_chan45.freq, spectra_4sec_ord40_chan45.rel,'k');
+plot(fractal_medfilt_ord10_3sec.freq, oscillatory_medfilt_ord10_3sec.powspctrm,'k');
+plot(fractal_medfilt_ord10_3sec.freq, oscillatory_medfilt_ord10_3sec.powspctrm,'b');
+plot(fractal_medfilt_ord20_3sec.freq, oscillatory_medfilt_ord20_3sec.powspctrm,'g');
+plot(fractal_medfilt_ord30_3sec.freq, oscillatory_medfilt_ord30_3sec.powspctrm,'r');
 
-
-title('Relative channel E45')
+title('Relative')
 xlabel('freq'); ylabel('power');
-legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
+legend({'median ord 2','median ord 10','median ord 20','median ord 30'},'location','northeast');
 
-%%
-
-figure();
-hold on;
-plot(spectra_4sec_ord0_chan47.freq, spectra_4sec_ord0_chan47.osc,'k');
-plot(spectra_4sec_ord2_chan47.freq, spectra_4sec_ord2_chan47.osc,'m');
-plot(spectra_4sec_ord10_chan47.freq, spectra_4sec_ord10_chan47.osc,'b');
-plot(spectra_4sec_ord20_chan47.freq, spectra_4sec_ord20_chan47.osc,'g');
-plot(spectra_4sec_ord30_chan47.freq, spectra_4sec_ord30_chan47.osc,'r');
-plot(spectra_4sec_ord40_chan47.freq, spectra_4sec_ord40_chan47.osc,'k');
-
-
-title('Oscillatory channel E47')
-xlabel('freq'); ylabel('power');
-legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
-
-
-figure();
-hold on;
-plot(spectra_4sec_ord0_chan47.freq, spectra_4sec_ord0_chan47.fra,'k');
-plot(spectra_4sec_ord2_chan47.freq, spectra_4sec_ord2_chan47.fra,'m');
-plot(spectra_4sec_ord10_chan47.freq, spectra_4sec_ord10_chan47.fra,'b');
-plot(spectra_4sec_ord20_chan47.freq, spectra_4sec_ord20_chan47.fra,'g');
-plot(spectra_4sec_ord30_chan47.freq, spectra_4sec_ord30_chan47.fra,'r');
-plot(spectra_4sec_ord40_chan47.freq, spectra_4sec_ord40_chan47.fra,'k');
-
-
-title('Fractal channel E47')
-xlabel('freq'); ylabel('power');
-legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
-
-
-figure();
-hold on;
-plot(spectra_4sec_ord0_chan47.freq, spectra_4sec_ord0_chan47.rel,'k');
-plot(spectra_4sec_ord2_chan47.freq, spectra_4sec_ord2_chan47.rel,'m');
-plot(spectra_4sec_ord10_chan47.freq, spectra_4sec_ord10_chan47.rel,'b');
-plot(spectra_4sec_ord20_chan47.freq, spectra_4sec_ord20_chan47.rel,'g');
-plot(spectra_4sec_ord30_chan47.freq, spectra_4sec_ord30_chan47.rel,'r');
-plot(spectra_4sec_ord40_chan47.freq, spectra_4sec_ord40_chan47.rel,'k');
-
-
-title('Relative channel E47')
-xlabel('freq'); ylabel('power');
-legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
 
 
 %% Artifact detection

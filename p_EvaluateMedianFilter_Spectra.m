@@ -19,7 +19,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 % load('D:\Sleep\DataDownload\Recordings\cfg_trial.mat')
 
 
-for subj = 13:numel(files)
+subj = 13; % fos subject 29
 
 data_filename   = files(subj).name;
 hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -50,40 +50,18 @@ cfg_preproc.detrend             = 'yes';
 cfg_preproc.lpfilter            = 'yes';
 cfg_preproc.lpfilttype          = 'fir';
 cfg_preproc.lpfreq              = 30;
-cfg_preproc.trials              = 36;
-cfg_preproc.medianfilter        = 'no';
+cfg_preproc.trials              = 36; % From trial 36 the specific noise we are looking for appears
+cfg_preproc.medianfilter        = 'yes';
 cfg_preproc.medianfiltord       = 40;
 
 
 data_preproc                    = ft_preprocessing(cfg_preproc);
 
-%% Bad channels detection
-
-% cfg_bchan{subj}                = [];
-% cfg_bchan{subj} .metric        = 'zvalue';
-% cfg_bchan{subj} .channel       = channels_wo_face;
-% cfg_bchan{subj} .threshold     = 1;
-% 
-% cfg_bchan{subj}                = ft_badchannel(cfg_bchan{subj},data_preproc);
-
-
-%% Data Visualization
-
-cfg_db                 = [];
-cfg_db.viewmode        = 'vertical';
-cfg_db.channel         = {'E43', 'E44', 'E45','E46','E47'};
-cfg_db.trials          = 36;
-cfg_db.ylim            = [-120 120];
-cfg_db                 = ft_databrowser(cfg_db, data_preproc);
-
-% clear data_preproc
-
-end
 
 %% IRASA for spectrum following Jens suggestions and code
 
 cf					= [];
-cf.trials           = 36;
+cf.trials           = 36; % From trial 36 the specific noise we are looking for appears
 cf.length			= 4;  % cut data into segments of this length (in sec)
 cf.overlap			= 0;  % with this overlap
 data_sleep_cut		= ft_redefinetrial(cf, data_preproc);
@@ -94,7 +72,7 @@ cfg_spect           = [];
 cfg_spect.method	= 'irasa';
 cfg_spect.pad		= 'nextpow2';
 % cfg_spect.trials    = 36;
-cfg_spect.channel   = 'E45';
+cfg_spect.channel   = 'E45'; % Noisy channel
 cfg_spect.foilim    = [10 20];
 fra					= ft_freqanalysis(cfg_spect, data_sleep_cut);
 
@@ -126,7 +104,7 @@ cfg_spect           = [];
 cfg_spect.method	= 'irasa';
 cfg_spect.pad		= 'nextpow2';
 % cfg_spect.trials    = 36;
-cfg_spect.channel   = 'E47';
+cfg_spect.channel   = 'E47'; % NOT Noisy channel
 cfg_spect.foilim    = [10 20];
 fra					= ft_freqanalysis(cfg_spect, data_sleep_cut);
 
@@ -245,61 +223,3 @@ plot(spectra_4sec_ord40_chan47.freq, spectra_4sec_ord40_chan47.rel,'k');
 title('Relative channel E47')
 xlabel('freq'); ylabel('power');
 legend({'no median filt','median ord 2','median ord 10','median ord 20','median ord 30','median ord 40'},'location','northeast');
-
-
-%% Artifact detection
-% 
-% cfg_art					= [];
-% % cfg_art.id              = cfg.id; % Take this info from cfg created above
-% cfg_art.continuous      = 'yes';
-% cfg_art.trl             = cfg.trl;
-% cfg_art.dataset         = cfg.dataset;
-% cfg_art.artfctdef       = [];
-% 
-% % Z-value based rejection
-% % This is the one from here: https://www.fieldtriptoolbox.org/tutorial/automatic_artifact_rejection/#examples-for-getting-started
-% % All those parameters are just what worked for me at some point, dont use
-% % them necessarily
-% 
-% 
-% cfg_art.artfctdef.zvalue.channel     = channels_wo_face; % dont incorporate artifact-prone frontal channels
-% cfg_art.artfctdef.zvalue.trlpadding  = 0;
-% cfg_art.artfctdef.zvalue.fltpadding  = 1;   % only used for filtering before artifact detection (tutorial: .1)
-% cfg_art.artfctdef.zvalue.artpadding  = 0.4; % window around artifacts still rejected
-% cfg_art.artfctdef.zvalue.detrend     = 'yes';
-% cfg_art.artfctdef.zvalue.bpfilter    = 'yes';
-% cfg_art.artfctdef.zvalue.bpfreq      = [55 80]; % check tutorals for optimal values
-% cfg_art.artfctdef.zvalue.bpfiltord   = 3;
-% cfg_art.artfctdef.zvalue.bpfilttype  = 'but';
-% cfg_art.artfctdef.zvalue.hilbert     = 'yes';         % ?
-% cfg_art.artfctdef.zvalue.boxcar      = 0.2;           % ?
-% cfg_art.artfctdef.zvalue.interactive = 'yes';
-% cfg_art.artfctdef.zvalue.cutoff      = 20;
-% cfg_art.feedback                     = 'yes';
-% cfg_art                              = ft_artifact_zvalue(cfg_art);
-% 
-% % There is also the one from here: 
-% % https://www.fieldtriptoolbox.org/tutorial/visual_artifact_rejection/#manual-artifact-rejection---display-a-summary
-% % ...which looks cool but it works differencely than all the
-% % ft_artifact_xxx functions. It needs data and gives you back lists of
-% % rejectable trials and channels I think.
-% % cfg          = [];
-% % cfg.method   = 'summary';
-% % cfg.ylim     = [-1e-12 1e-12];
-% % dummy        = ft_rejectvisual(cfg,dataFIC);
-% 
-% % And then there is a fully manual way of detection artifacts, by marking
-% % them in the databrowser. Here you can also see all the previously
-% % determined artifacts and doublecheck them. There might be a few mistakes
-% % in this code, didnt double check:
-% cfg_db                 = [];
-% cfg_db.viewmode        = 'vertical';
-% cfg_db.channel         = channels_wo_face;
-% % cfg_db.data            = data_preproc;%fullfile(paths.data, 'RC_121_sleep.mff');%Doing now with subject 12, session 1
-% % cfg_db.blocksize       = 30;		
-% cfg_db.ylim            = [-120 120];
-% % cfg_db.selectmode      = 'markartifact';
-% % cfg_db.artfctdef	   = cfg_art.artfctdef;
-% cfg_db                 = ft_databrowser(cfg_db, data_preproc);
-% 
-% %save(cfg_art, path_artifactdef);
