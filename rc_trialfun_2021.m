@@ -54,7 +54,7 @@ Events = events;
 
 Events = rmfield(Events, ...
     {'value','duration','begintime','classid','code','name','relativebegintime',...
-    'sourcedevice','type','tracktype','mffkeys','tracktype'});
+    'sourcedevice','type','tracktype','mffkeys','tracktype','mffkeysbackup'});
 
 
 % Remove the events that appear to be empty
