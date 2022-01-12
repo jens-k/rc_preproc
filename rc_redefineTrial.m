@@ -1,13 +1,8 @@
-function trl = rc_trialfun_2021(cfg)
+function trl = rc_redefineTrial(cfg)
 %% --------------------------------------------------------------
 % Trial function inside
 %%---------------------------------------------------------------
-if isfile('C:\Users\lanan\Documents\Github\rc_preproc\EventsDescription.mat')
-     load('C:\Users\lanan\Documents\Github\rc_preproc\EventsDescription.mat')
-end
-
-% Load artifacts
-p_ArtifactsDefinition
+load('C:\Users\lanan\Documents\Github\rc_preproc\EventsDescription.mat')
 
 % Load and check data
 
@@ -59,8 +54,8 @@ Events = events;
 % Remove fields of the structure that are not relevant.
 
 Events = rmfield(Events, ...
-    {'value','duration','begintime','classid','code','relativebegintime',...
-    'sourcedevice','type','mffkeys','mffkeysbackup'});
+    {'value','duration','begintime','classid','code','name','relativebegintime',...
+    'sourcedevice','type','tracktype','mffkeys','tracktype','mffkeysbackup'});
 
 
 % Remove the events that appear to be empty
@@ -142,33 +137,6 @@ will_be_rejected_cell   = num2cell(will_be_rejected);
 
 [Events.ReasonForRejection] = ReasonforRejection{:};
 
-
-%%
-% Taking all the events that are not rejected until now (that were later
-% visually inspected, we need to reject the ones that were noisy by visual
-% inspection)
-
-NonRejectedEvents = find([Events.Rejected]==0);
-
-%------------------------------------------------
-% see artifacts from the artifact definition. 
-%------------------------------------------------
-
-%make sure we are taking the same dataset
-dataset = find(strcmp(artifacts.dataset,[cfg.id,'_sleep']));
-
-badtrials = artifacts.badtrials(dataset);
-
-if ~isempty(badtrials)
-    badtrials = cell2mat(badtrials{:});
-    original_badtrials = NonRejectedEvents(badtrials);
-    
-    for badtrial = original_badtrials
-        Events(badtrial).Rejected = 1;
-        Events(badtrial).ReasonForRejection = 'artifact';
-    end
-end
-
 AllEvents{1,cfg.counter} = cfg.id;
 AllEvents{2,cfg.counter} = Events;
 
@@ -206,4 +174,3 @@ trl_2ndColumn = round([final_trials.sample]')+cfg.trialdef.post*hdr.Fs;
 trl_3rdColumn = [final_trials.offset]'-cfg.trialdef.pre*hdr.Fs;
 
 trl = [trl_1stColumn,trl_2ndColumn,trl_3rdColumn];
-

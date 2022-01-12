@@ -47,8 +47,11 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_131_sleep';
-artifacts.artifacts{cnt}  = {{27,{'E1','E8'}},{34,{'E8','E21','E25'}},...
-    {37,{'E8','E21','E25'}},{39,'E8'}}; 
+% artifacts.artifacts{cnt}  = {{27,{'E1','E8'}},{34,{'E8','E21','E25'}},...
+%     {37,{'E8','E21','E25'}},{39,'E8'}};
+% E1,E8,E21,E25 are face channels, so we don't care about them since they are
+% going to be removed
+artifacts.artifacts{cnt}  = {}; 
 artifacts.badtrials{cnt}  = {42};
 artifacts.badchans{cnt}   = {};
 
@@ -62,13 +65,19 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_141_sleep';
-artifacts.artifacts{cnt}  = {{20,'E1'}};
+% artifacts.artifacts{cnt}  = {{20,'E1'}};
+% E1 is face channel, so we don't care about it since it is
+% going to be removed
+artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {33,39};
 artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_142_sleep';
-artifacts.artifacts{cnt}  = {{13,'E1'}};
+% artifacts.artifacts{cnt}  = {{13,'E1'}};
+% E1 is face channel, so we don't care about it since it is
+% going to be removed
+artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {34};
 artifacts.badchans{cnt}   = {};
 
@@ -104,7 +113,10 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_201_sleep';
-artifacts.artifacts{cnt}  = {{43,{'E9','E14','E21','E22'}}};
+% artifacts.artifacts{cnt}  = {{43,{'E9','E14','E21','E22'}}};
+% E21 is face channel, so we don't care about it since it is
+% going to be removed
+artifacts.artifacts{cnt}  = {{43,{'E9','E14','E22'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
 
@@ -118,7 +130,7 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_241_sleep';
-artifacts.artifacts{cnt}  = {{51,'E34'}};
+artifacts.artifacts{cnt}  = {{51,{'E34'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
 
@@ -132,7 +144,10 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_251_sleep';
-artifacts.artifacts{cnt}  = {{17,{'E1','E32'}},{30,'E2'}};
+% artifacts.artifacts{cnt}  = {{17,{'E1','E32'}},{30,'E2'}};
+% E1,E32 are face channels, so we don't care about them since they are
+% going to be removed
+artifacts.artifacts{cnt}  = {{30,{'E2'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
 
@@ -160,14 +175,17 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_281_sleep';
-artifacts.artifacts{cnt}  = {{40,'E77'}};
+artifacts.artifacts{cnt}  = {{40,{'E77'}}};
 artifacts.badtrials{cnt}  = {38};
 artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_282_sleep';
-artifacts.artifacts{cnt}  = {{12,{'E8','E21','E25'}},{20,'E8'},...
-    {54,{'E8','E21','E25'}},{79,{'E1','E8'}}};
+% artifacts.artifacts{cnt}  = {{12,{'E8','E21','E25'}},{20,'E8'},...
+%     {54,{'E8','E21','E25'}},{79,{'E1','E8'}}};
+% E8,E21,E25 are face channels, so we don't care about them since they are
+% going to be removed
+artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {79};
 artifacts.badchans{cnt}   = {};
 
@@ -175,13 +193,16 @@ artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_291_sleep';
-artifacts.artifacts{cnt}  = {{30,'E107'}};
+artifacts.artifacts{cnt}  = {{30,{'E107'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_292_sleep';
-artifacts.artifacts{cnt}  = {{9,{'E8','E14'}}};
+% artifacts.artifacts{cnt}  = {{9,{'E8','E14'}}};
+% E8,E14 are face channels, so we don't care about them since they are
+% going to be removed
+artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {6,59};
 artifacts.badchans{cnt}   = {};
 
@@ -195,8 +216,10 @@ artifacts.badchans{cnt}   = {'E100'};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_302_sleep';
-artifacts.artifacts{cnt}  = {{1,{'E4','E6','E8','E9','E17','E21','E22','E32',...
-    'E49','E107','E110'}}};
+% artifacts.artifacts{cnt}  = {{1,{'E4','E6','E8','E9','E17','E21','E22','E32',...
+%     'E49','E107','E110'}}};
+artifacts.artifacts{cnt}  = {{1,{'E4','E6','E9','E22',...
+    'E107','E110'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
 
