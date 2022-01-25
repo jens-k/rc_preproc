@@ -50,9 +50,9 @@ cfg_preproc.detrend             = 'yes';
 cfg_preproc.lpfilter            = 'yes';
 cfg_preproc.lpfilttype          = 'fir';
 cfg_preproc.lpfreq              = 30;
-cfg_preproc.trials              = 36; % From trial 36 the specific noise we are looking for appears
+cfg_preproc.trials              = 36; % From trial 36, it appears the specific noise we are looking for 
 cfg_preproc.medianfilter        = 'yes';
-cfg_preproc.medianfiltord       = 40;
+cfg_preproc.medianfiltord       = 30;
 
 
 data_preproc                    = ft_preprocessing(cfg_preproc);

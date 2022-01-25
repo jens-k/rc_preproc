@@ -25,7 +25,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 
 p_ArtifactsDefinition
 
-for file = 2j:numel(files)
+for file = 15:numel(files)
     
     data_filename   = files(file).name;
     hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -148,15 +148,16 @@ for file = 2j:numel(files)
     
     
     newPath = 'D:\Sleep\DataDownload\Preprocessing_250Hz\';
-    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_downsamp_250','-v7.3')
+    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_preproc','-v7.3')
 
         
     cfg_downsample                 = [];
     cfg_downsample.resamplefs      = 100;
     data_downsamp_100              = ft_resampledata(cfg_downsample, data_preproc);
     
+    
     newPath = 'D:\Sleep\DataDownload\Preprocessing_100Hz\';
-    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_downsamp_100','-v7.3')
+    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_preproc','-v7.3')
 
 end
 
