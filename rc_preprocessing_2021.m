@@ -25,7 +25,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 
 p_ArtifactsDefinition
 
-for file = 2j:numel(files)
+for file = 1:numel(files)
     
     data_filename   = files(file).name;
     hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
