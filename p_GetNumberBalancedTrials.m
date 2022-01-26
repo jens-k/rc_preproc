@@ -11,7 +11,7 @@
 %       - mffkey_cidx
 %       - mffkey_gidx
 %       - SleepStage
-%       - stimulation
+%       - stimulation               Yes
 %       - Distance2NextTrigger
 %       - Rejected
 %       - ReasonForRejection        Yes
@@ -41,21 +41,40 @@ for iSubj = 1:size(AllEvents, 2)
     SubjectEvents           = AllEvents{2, iSubj};
 
     Reasons                 = {SubjectEvents.ReasonForRejection};
+    Stimulations            = {SubjectEvents.stimulation};
 
-    NumberTrials            = numel(Reasons)/2;
-
-    if mod(NumberTrials, 1) ~= 0
-        error('NumberTrials should be integer')
-    end
+    IdxTrialsOdor           = find(strcmp(Stimulations, 'ODOR'));
+    IdxTrialsVehicle        = find(strcmp(Stimulations, 'VEHICLE'));
+    
+    NumberTrialsOdor        = numel(IdxTrialsOdor);
+    NumberTrialsVehicle     = numel(IdxTrialsVehicle);
+    
+    NumberTrials            = min([NumberTrialsOdor, NumberTrialsVehicle]);
+    
 
     IdxRejectedOff          = find(~strcmp(Reasons, 'OFF Period'));
     IdxRejectedOther        = find(~strcmp(Reasons, ''));
 
     IdxBadTrial             = find(ismember(IdxRejectedOff, IdxRejectedOther));
     
+    % Build complete cycles matrix
+    CompleteCycles          = [];
+    for iOdor = 1:numel(IdxTrialsOdor)-1
+        CompleteCycles(iOdor, :) = IdxTrialsOdor(iOdor):IdxTrialsOdor(iOdor+1)-1;
+    end
+    
+    RejectedCycles          = 0;
+    for iCycle = 1:size(CompleteCycles, 1)
+        if any(ismember(IdxBadTrial, CompleteCycles(iCycle, :))) % Any
+            iSubj
+            ismember(IdxBadTrial, CompleteCycles(iCycle, :))
+            RejectedCycles = RejectedCycles +1;
+        end
+    end
+    
     % Subject's information
     TotalTrials(iSubj)      = NumberTrials;
-    ValidTrials(iSubj)      = numel(IdxBadTrial);
+    ValidTrials(iSubj)      = RejectedCycles;
     
     VerbalOutput{iSubj, 1}  = AllEvents{1, iSubj};
     VerbalOutput{iSubj, 2}  = strcat(string(numel(IdxBadTrial)), '/', ...
