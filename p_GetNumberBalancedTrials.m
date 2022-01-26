@@ -45,29 +45,34 @@ for iSubj = 1:size(AllEvents, 2)
 
     IdxTrialsOdor           = find(strcmp(Stimulations, 'ODOR'));
     IdxTrialsVehicle        = find(strcmp(Stimulations, 'VEHICLE'));
+    IdxTrialsOff            = find(strcmp(Stimulations, 'OFF'));
     
-    NumberTrialsOdor        = numel(IdxTrialsOdor);
-    NumberTrialsVehicle     = numel(IdxTrialsVehicle);
+    if IdxTrialsOdor(end) > IdxTrialsVehicle(end)
+        IdxTrialsOdor(end) = [];
+    end
     
-    NumberTrials            = min([NumberTrialsOdor, NumberTrialsVehicle]);
+    NumberTrials            = min([numel(IdxTrialsOdor), numel(IdxTrialsVehicle)]);
     
 
-    IdxRejectedOff          = find(~strcmp(Reasons, 'OFF Period'));
-    IdxRejectedOther        = find(~strcmp(Reasons, ''));
+    IdxBadTrial             = find(~strcmp(Reasons, ''));
+    IdxBadBecauseOff        = find(ismember(IdxBadTrial, IdxTrialsOff));
+    IdxBadTrial(IdxBadBecauseOff) = []; % Not actually bad trials, but OFF
 
-    IdxBadTrial             = find(ismember(IdxRejectedOff, IdxRejectedOther));
     
     % Build complete cycles matrix
     CompleteCycles          = [];
-    for iOdor = 1:numel(IdxTrialsOdor)-1
-        CompleteCycles(iOdor, :) = IdxTrialsOdor(iOdor):IdxTrialsOdor(iOdor+1)-1;
+    for iOdor = 1:numel(IdxTrialsOdor)
+        if iOdor == numel(IdxTrialsOdor)
+            CompleteCycles(iOdor, :) = IdxTrialsOdor(iOdor):IdxTrialsOdor(iOdor)+3;
+        else
+            CompleteCycles(iOdor, :) = IdxTrialsOdor(iOdor):IdxTrialsOdor(iOdor+1)-1;
+    
+        end
     end
     
     RejectedCycles          = 0;
     for iCycle = 1:size(CompleteCycles, 1)
         if any(ismember(IdxBadTrial, CompleteCycles(iCycle, :))) % Any
-            iSubj
-            ismember(IdxBadTrial, CompleteCycles(iCycle, :))
             RejectedCycles = RejectedCycles +1;
         end
     end
@@ -77,9 +82,9 @@ for iSubj = 1:size(AllEvents, 2)
     ValidTrials(iSubj)      = RejectedCycles;
     
     VerbalOutput{iSubj, 1}  = AllEvents{1, iSubj};
-    VerbalOutput{iSubj, 2}  = strcat(string(numel(IdxBadTrial)), '/', ...
+    VerbalOutput{iSubj, 2}  = strcat(string(RejectedCycles), '/', ...
         string(NumberTrials));
-    VerbalOutput{iSubj, 3}  = round(numel(IdxBadTrial) * 100 / NumberTrials, 1);
+    VerbalOutput{iSubj, 3}  = ceil(RejectedCycles * 100 / NumberTrials);
 
 end
 
