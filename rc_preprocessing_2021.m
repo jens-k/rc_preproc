@@ -34,7 +34,7 @@ for file = 1:numel(files)
     % thinking of the futher analysis (i.e. TF)
     cfg_trial					= [];
     cfg_trial.dataset           = fullfile(paths.data, data_filename);% Doing now with subject 12, session 1
-    cfg_trial.trialdef.pre		= 10;%5; % all the .trialdef fields are just forwarded to the cfg.trialfun
+    cfg_trial.trialdef.pre		= 15;%5; % all the .trialdef fields are just forwarded to the cfg.trialfun
     cfg_trial.trialdef.post	    = 20;%15;
     cfg_trial.epoch_length_sec  = 30;
     cfg_trial.hypnogram			= fullfile(paths.sl_hypnograms,hyp_filename); % Doing now with subject 12, session 1
@@ -115,7 +115,7 @@ for file = 1:numel(files)
         end
     end
     
-    %% Remove the noisy trials
+    % Remove the noisy trials
     
     badtrials = cell2mat(artifacts.badtrials{dataset});
     
@@ -128,7 +128,7 @@ for file = 1:numel(files)
         data_preproc    = ft_selectdata(cfg, data_preproc);
     end
     
-    %% Re-reference data
+    % Re-reference data
     
     cfg_ref                 = [];
     cfg_ref.channel         = 'all'; % this is the default
@@ -138,7 +138,7 @@ for file = 1:numel(files)
     data_preproc            = ft_preprocessing(cfg_ref, data_preproc);
     
     
-%     save(strcat(paths.save,data_filename(1:12),'.mat'),'cfg_trial','data_preproc','-v7.3')
+    save(strcat(paths.save,data_filename(1:12),'.mat'),'cfg_trial','data_preproc','-v7.3')
 
     %% Downsampling
     
@@ -161,8 +161,8 @@ for file = 1:numel(files)
 end
 
 %% Visual inspection of channels
+% % % 
 % % 
-% 
 % channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
 % 
 % cfg_db                          = [];
@@ -172,7 +172,7 @@ end
 % cfg_db.channel                  = channels_wo_face;
 % cfg_db.ylim                     = [-20 20];
 % cfg_db                          = ft_databrowser(cfg_db, data_preproc);
-% % % 
+% % % % 
 % %% Artifact detection
 % 
 % path_prep = 'D:\Sleep\DataDownload\PreprocessingBPFilter';
