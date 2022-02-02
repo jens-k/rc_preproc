@@ -13,11 +13,16 @@
 %                         extract electrode datapoints for detection (cell 
 %                         array of char)
 
+% Parameters --------------------------------------------------------------
 DataPath = 'D:\germanStudyData\datasetsSETS\AndreaPreprocessing2022\FieldtripOut';
-
 SavePath                    = strcat(cd, filesep, 'PrePro_Andrea');
-mkdir(SavePath)
 
+Pairing                     = 0;    % [0, 1] for Off or On, respectively. 
+                                    % Rejecting all trials can do not fit 
+                                    % into a complete stimulation cycle.
+
+
+% Prepare userland --------------------------------------------------------
 Events                      = load('EventsDescription.mat');
 
 Files                       = dir(DataPath);
@@ -41,60 +46,34 @@ for iFile = 1:numel(Files)
     % Define trials and conditions ----------------------------------------
     IdxSubj                 = strcmp(Events.AllEvents(1, :), SubjectCode);
     SubjectEvents           = Events.AllEvents{2, IdxSubj};
+    
+    ValidTrials             = ([SubjectEvents.Rejected] == 0);
+    ValidTrials             = SubjectEvents(ValidTrials);
 
-    Reasons                 = {SubjectEvents.ReasonForRejection};
-    Stimulations            = {SubjectEvents.stimulation};
-    
-    % Get rid of Off periods
-    IdxTrialsOff            = find(strcmp(Stimulations, 'OFF'));
-    Stimulations(IdxTrialsOff) = [];
-    Reasons(IdxTrialsOff)      = [];
-
-    IdxTrialsOdor           = find(strcmp(Stimulations, 'ODOR'));
-    IdxTrialsVehicle        = find(strcmp(Stimulations, 'VEHICLE'));
-    
-    
-    if IdxTrialsOdor(end) > IdxTrialsVehicle(end)
-        IdxTrialsOdor(end)  = [];
-    end
-        
-    IdxBadBecauseShort      = find(strcmp(Reasons, 'too short'));
-    IdxBadBecauseArtifact   = find(strcmp(Reasons, 'artifact'));
-    IdxBadTrial             = sort([IdxBadBecauseShort, IdxBadBecauseArtifact]);
-    
-    % Build complete cycles matrix
-    CompleteCycles          = [];
-    for iOdor = 1:numel(IdxTrialsOdor)
-        if iOdor == numel(IdxTrialsOdor)
-            CompleteCycles(iOdor, :) = IdxTrialsOdor(iOdor):IdxTrialsOdor(iOdor)+1;
-        else
-            CompleteCycles(iOdor, :) = IdxTrialsOdor(iOdor):IdxTrialsOdor(iOdor+1)-1;
-        end
-    end
-    
-    % Sanity check: Every second element in a cycle is vehicle?
-    for iVeh = 1:numel(IdxTrialsVehicle)
-        if IdxTrialsVehicle(iVeh) ~= CompleteCycles(iVeh, 2)
-            error('Trials are non-alternating')
-        end
-    end
-
-    % Reject trials respecting complete cycles
-    for iCycle = size(CompleteCycles, 1):-1:1
-        if any(ismember(IdxBadTrial, CompleteCycles(iCycle, :))) % Any
-            CompleteCycles(iCycle, :) = [];
-            IdxTrialsOdor(iCycle)     = [];
-            IdxTrialsVehicle(iCycle)  = [];
-        end
-    end
-    
-    VehicleTrials           = data_downsamp_250.trial(IdxTrialsVehicle);
-    OdorTrials              = data_downsamp_250.trial(IdxTrialsOdor);
+    IdxOdorTrials           = find(strcmp({ValidTrials.stimulation}, 'ODOR'));
+    IdxVehicleTrials        = find(strcmp({ValidTrials.stimulation}, 'VEHICLE'));
     
     % Sanity check: Paired trials?
-    if numel(OdorTrials) ~= numel(VehicleTrials)
-        error('Trials are not paired between conditions')
+    if Pairing == 1
+        
+        TheoreticalVehicle  = IdxOdorTrials + 1;
+        TheoreticalOdor     = IdxVehicleTrials - 1;
+        
+        IdxOdorTrials       = IdxOdorTrials(ismember(IdxOdorTrials, ...
+            TheoreticalOdor));
+        IdxVehicleTrials    = IdxVehicleTrials(ismember(IdxVehicleTrials, ...
+            TheoreticalVehicle));
+        
+        if numel(IdxOdorTrials) ~= numel(IdxVehicleTrials)
+            error('Trials are not paired between conditions')
+        end
+    else
+        fprintf('No pairing of trials...\n')
     end
+    
+    VehicleTrials           = data_downsamp_250.trial(IdxVehicleTrials);
+    OdorTrials              = data_downsamp_250.trial(IdxOdorTrials);
+    
         
     % Final output preparation --------------------------------------------
     nSamples                = numel(Times);
@@ -121,7 +100,7 @@ for iFile = 1:numel(Files)
     
     
     % Vehicle dataset
-    Vehicle.data            = NaN(nChans, nSamples, numel(OdorTrials));
+    Vehicle.data            = NaN(nChans, nSamples, numel(VehicleTrials));
     for iTrial = 1:numel(VehicleTrials)
         Trial               = VehicleTrials{iTrial};
         Vehicle.data(:, :, iTrial) = Trial(:, 1:nSamples);
