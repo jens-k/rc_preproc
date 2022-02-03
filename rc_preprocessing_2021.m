@@ -162,18 +162,18 @@ end
 
 %% Visual inspection of channels
 % % % 
-% % 
-% channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
 % 
-% cfg_db                          = [];
-% cfg_db.viewmode                 = 'vertical';
-% cfg_db.preproc.baselinewindow   = [-5,15];
-% % cfg_db.latency         = [-5,15];
-% cfg_db.channel                  = channels_wo_face;
-% cfg_db.ylim                     = [-20 20];
-% cfg_db                          = ft_databrowser(cfg_db, data_preproc);
-% % % % 
-% %% Artifact detection
+channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
+
+cfg_db                          = [];
+cfg_db.viewmode                 = 'vertical';
+cfg_db.preproc.baselinewindow   = [-5,15];
+% cfg_db.latency         = [-5,15];
+cfg_db.channel                  = channels_wo_face;
+cfg_db.ylim                     = [-20 20];
+cfg_db                          = ft_databrowser(cfg_db, data_downsamp_250);
+% % % 
+% %% Artifact detectionahh
 % 
 % path_prep = 'D:\Sleep\DataDownload\PreprocessingBPFilter';
 % files = dir(strcat(path_prep,filesep,'*.mat'));
