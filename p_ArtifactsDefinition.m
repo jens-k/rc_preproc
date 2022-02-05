@@ -18,14 +18,14 @@ artifacts.badchans{cnt}   = {};
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_091_sleep';
 artifacts.artifacts{cnt}  = {{30,{'E118'}},{31,{'E118'}},{32,{'E118'}},...
-    {38,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {40,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {41,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {42,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {43,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {44,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {45,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
-    {46,{'E2', 'E3', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...
+    {38,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {40,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {41,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {42,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {43,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {44,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {45,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {46,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
     };
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
@@ -35,7 +35,7 @@ cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_092_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
-artifacts.badchans{cnt}   = {'E33', 'E38', 'E56', 'E57',... %Mastoid
+artifacts.badchans{cnt}   = {'E33', 'E38', 'E57',... %Mastoid %removed E56, is is not son bad and it doesnt have good neighbors
     'E63', 'E99', 'E107','E122'};
 
 

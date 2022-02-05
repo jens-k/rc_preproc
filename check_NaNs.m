@@ -4,16 +4,20 @@ files = dir(strcat(filepath,'*.mat'));
 
 for file = 1:numel(files)
     
-    count = 0;
+    
     load(strcat(filepath,files(file).name))
     
     data = data_downsamp_250.trial;
+    
+    %%
+    count = 0;
+    data = data_preproc.trial;
     
     for trial = 1:numel(data)
         
         tempdata = data{1,trial};
         
-        if(isnan(tempdata))
+        if~isempty(find(isnan(tempdata), 1))
             count = count+1;
         end
     end
