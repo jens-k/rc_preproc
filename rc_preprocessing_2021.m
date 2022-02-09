@@ -1,9 +1,9 @@
-addpath(genpath('C:\Users\lanan\Documents\Github\rc_preproc\'))
+addpath(genpath('/home/andrea/Documents/Github/rc_preproc/'))
 % ft_defaults
 
 % addpath(genpath('C:\Users\lanan\Documents\MATLAB\fieldtrip\'))
 
-addpath('C:\Users\lanan\Documents\MATLAB\fieldtrip\')
+addpath('/home/andrea/Documents/MatlabFunctions/fieldtrip/')
 ft_defaults
 %% General comments
 % I wrote this code example down there without ever running it; please
@@ -11,11 +11,18 @@ ft_defaults
 
 %% ------     FIRST-TIME SETUP
 % init_rc;
+% paths                       = [];
+% paths.root                  = 'D:\Sleep\DataDownload';
+% paths.data                  = 'D:\Sleep\DataDownload\Recordings\Both';
+% paths.sl_hypnograms         = 'D:\Sleep\DataDownload\Hypnograms';
+% paths.save                  = 'D:\Sleep\DataDownload\Preprocessing_ReRef\';
+
+%server
 paths                       = [];
-paths.root                  = 'D:\Sleep\DataDownload';
-paths.data                  = 'D:\Sleep\DataDownload\Recordings\Both';
-paths.sl_hypnograms         = 'D:\Sleep\DataDownload\Hypnograms';
-paths.save                  = 'D:\Sleep\DataDownload\Preprocessing_ReRef\';
+paths.root                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
+paths.data                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
+paths.sl_hypnograms         = '/mnt/disk1/sleep/German_Study/Data/Hypnograms';
+paths.save                  = '/mnt/disk1/sleep/Datasets/TrialDef/Preprocessing_250Hz/';
 
 files = dir(strcat(paths.data,filesep,'*.mff'));
 
@@ -25,7 +32,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 
 p_ArtifactsDefinition
 
-for file = 1:numel(files)
+for file = 19%1:numel(files)
     
     data_filename   = files(file).name;
     hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -57,7 +64,7 @@ for file = 1:numel(files)
     cfg_preproc.lpfilter            = 'yes';
     cfg_preproc.lpfilttype          = 'fir';
     cfg_preproc.lpfreq              = 30;
-    cfg_preproc.medianfilter        = 'yes';
+    cfg_preproc.medianfilter        = 'yes'; 
     cfg_preproc.medianfiltord       = 30;
     
     data_preproc                    = ft_preprocessing(cfg_preproc);
@@ -138,7 +145,7 @@ for file = 1:numel(files)
     data_preproc            = ft_preprocessing(cfg_ref, data_preproc);
     
     
-    save(strcat(paths.save,data_filename(1:12),'.mat'),'cfg_trial','data_preproc','-v7.3')
+    % save(strcat(paths.save,data_filename(1:12),'.mat'),'cfg_trial','data_preproc','-v7.3')
 
     %% Downsampling
     
@@ -147,32 +154,32 @@ for file = 1:numel(files)
     data_downsamp_250              = ft_resampledata(cfg_downsample, data_preproc);
     
     
-    newPath = 'D:\Sleep\DataDownload\Preprocessing_250Hz\';
+    newPath = paths.save;%'D:\Sleep\DataDownload\Preprocessing_250Hz\';
     save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_downsamp_250','-v7.3')
 
         
-    cfg_downsample                 = [];
-    cfg_downsample.resamplefs      = 100;
-    data_downsamp_100              = ft_resampledata(cfg_downsample, data_preproc);
+    % cfg_downsample                 = [];
+    % cfg_downsample.resamplefs      = 100;
+    % data_downsamp_100              = ft_resampledata(cfg_downsample, data_preproc);
     
-    newPath = 'D:\Sleep\DataDownload\Preprocessing_100Hz\';
-    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_downsamp_100','-v7.3')
+    % newPath = 'D:\Sleep\DataDownload\Preprocessing_100Hz\';
+    % save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_downsamp_100','-v7.3')
 
 end
 
 %% Visual inspection of channels
 % % % 
 % 
-channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
+% channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
 
-cfg_db                          = [];
-cfg_db.viewmode                 = 'vertical';
-cfg_db.preproc.baselinewindow   = [-5,15];
-% cfg_db.latency         = [-5,15];
-cfg_db.channel                  = channels_wo_face;
-cfg_db.ylim                     = [-20 20];
-cfg_db                          = ft_databrowser(cfg_db, data_downsamp_250);
-% % % 
+% cfg_db                          = [];
+% cfg_db.viewmode                 = 'vertical';
+% cfg_db.preproc.baselinewindow   = [-5,15];
+% % cfg_db.latency         = [-5,15];
+% cfg_db.channel                  = channels_wo_face;
+% cfg_db.ylim                     = [-20 20];
+% cfg_db                          = ft_databrowser(cfg_db, data_downsamp_250);
+% % % % 
 % %% Artifact detectionahh
 % 
 % path_prep = 'D:\Sleep\DataDownload\PreprocessingBPFilter';
