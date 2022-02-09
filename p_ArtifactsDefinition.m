@@ -6,19 +6,21 @@ artifacts.dataset{cnt}    = 'RC_051_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_052_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_091_sleep';
 artifacts.artifacts{cnt}  = {{30,{'E118'}},{31,{'E118'}},{32,{'E118'}},...
-    {38,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
+    {38,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed from the list E3, is is not son bad and is affecting the repairing of channel E2
     {40,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
     {41,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
     {42,{'E2', 'E9', 'E10', 'E15', 'E56', 'E108', 'E122', 'E123','E124'}},...%removed E3, is is not son bad and is affecting the repairing of channel E2
@@ -29,6 +31,8 @@ artifacts.artifacts{cnt}  = {{30,{'E118'}},{31,{'E118'}},{32,{'E118'}},...
     };
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 cnt = cnt+1;
@@ -37,6 +41,9 @@ artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {'E33', 'E38', 'E57',... %Mastoid %removed E56, is is not son bad and it doesnt have good neighbors
     'E63', 'E99', 'E107','E122'};
+artifacts.reref{cnt}      = {'E50', 'E100'}; %chose E50, since E56 is still a bit noisy
+
+
 
 
 cnt = cnt+1;
@@ -44,6 +51,7 @@ artifacts.dataset{cnt}    = 'RC_121_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {24};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 cnt = cnt+1;
@@ -51,6 +59,7 @@ artifacts.dataset{cnt}    = 'RC_122_sleep';
 artifacts.artifacts{cnt}  = {{19,{'E39', 'E122'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 
@@ -63,12 +72,15 @@ artifacts.dataset{cnt}    = 'RC_131_sleep';
 artifacts.artifacts{cnt}  = {{27,{'E22'}},{34,{'E22'}},{36,{'E22'}},{37,{'E22'}},{38,{'E22'}}}; 
 artifacts.badtrials{cnt}  = {42};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_132_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {44};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 
@@ -79,7 +91,9 @@ artifacts.dataset{cnt}    = 'RC_141_sleep';
 % going to be removed
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {33,39};
-artifacts.badchans{cnt}   = {}; 
+artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_142_sleep';
@@ -90,6 +104,8 @@ artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {34};
 artifacts.badchans{cnt}   = {'E45', 'E56', 'E63', 'E90', 'E99', 'E100',... %Mastoid
     'E101', 'E108'};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -100,12 +116,15 @@ artifacts.artifacts{cnt}  = {{14,{'E114','E116','E121','E122','E124'}},...
     'E123', 'E124'}},{47,{'E9','E39','E107'}}};
 artifacts.badtrials{cnt}  = {19,29};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_162_sleep';
 artifacts.artifacts{cnt}  = {{40,{'E87','E108'}},{49,{'E59'}}};
 artifacts.badtrials{cnt}  = {55};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 
@@ -114,12 +133,15 @@ artifacts.dataset{cnt}    = 'RC_171_sleep';
 artifacts.artifacts{cnt}  = {{18,{'E114'}}};
 artifacts.badtrials{cnt}  = {48};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_172_sleep';
 artifacts.artifacts{cnt}  = {{59, {'E63', 'E68'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {'E15', 'E22', 'E26', 'E27', 'E39', 'E56'};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 
@@ -131,12 +153,15 @@ artifacts.dataset{cnt}    = 'RC_201_sleep';
 artifacts.artifacts{cnt}  = {{43,{'E9','E22'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_202_sleep';
 artifacts.artifacts{cnt}  = {{27,{'E16'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
 
@@ -145,6 +170,8 @@ artifacts.dataset{cnt}    = 'RC_241_sleep';
 artifacts.artifacts{cnt}  = {{35,{'E123'}},{46,{'E123'}},{51,{'E34'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_242_sleep';
@@ -152,6 +179,8 @@ artifacts.artifacts{cnt}  = {{27,{'E5'}},{28,{'E27'}},{29,{'E5'}},...
     {33,{'E116'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -163,12 +192,16 @@ artifacts.dataset{cnt}    = 'RC_251_sleep';
 artifacts.artifacts{cnt}  = {{30,{'E2'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {'E99', 'E100', 'E107'}; %Mastoid
+artifacts.reref{cnt}      = {'E57', 'E101'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_252_sleep';
 artifacts.artifacts{cnt}  = {{13,{'E99'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -177,12 +210,16 @@ artifacts.dataset{cnt}    = 'RC_261_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {35};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_262_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -191,6 +228,8 @@ artifacts.dataset{cnt}    = 'RC_281_sleep';
 artifacts.artifacts{cnt}  = {{39,{'E33','E108'}},{40,{'E77'}}};
 artifacts.badtrials{cnt}  = {38};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_282_sleep';
@@ -201,6 +240,8 @@ artifacts.dataset{cnt}    = 'RC_282_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {79};
 artifacts.badchans{cnt}   = {'E39', 'E45','E57','E108'}; %Mastoid
+artifacts.reref{cnt}      = {'E56', 'E100'};
+
 
 
 
@@ -209,6 +250,8 @@ artifacts.dataset{cnt}    = 'RC_291_sleep';
 artifacts.artifacts{cnt}  = {{30,{'E107'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_292_sleep';
@@ -218,6 +261,8 @@ artifacts.dataset{cnt}    = 'RC_292_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {6,59};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -226,6 +271,8 @@ artifacts.dataset{cnt}    = 'RC_301_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {'E100','E108'}; %Mastoid
+artifacts.reref{cnt}      = {'E57', 'E107'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_302_sleep';
@@ -236,6 +283,8 @@ artifacts.artifacts{cnt}  = {{1,{'E4', 'E6', 'E9', 'E22',...
     {27,{'E105'}},{52,{'E2','E26','E121','E122'}},{53,{'E45'}},{54,{'E45'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {'E2', 'E9', 'E56', 'E57', 'E100', 'E107', 'E124'}; %Mastoids
+artifacts.reref{cnt}      = {'E50', 'E100'};
+
 
 
 
@@ -271,12 +320,16 @@ artifacts.artifacts{cnt}  = {...
     };
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_392_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -285,12 +338,16 @@ artifacts.dataset{cnt}   = 'RC_411_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {41};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_412_sleep';
 artifacts.artifacts{cnt}  = {{33,{'E3'}},{36,{'E2','E3','E23','E26','E29'}}};
 artifacts.badtrials{cnt}  = {1};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -299,12 +356,16 @@ artifacts.dataset{cnt}    = 'RC_441_sleep';
 artifacts.artifacts{cnt}  = {{75,{'E114','E121','E122'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {'E107'};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_442_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -316,6 +377,8 @@ artifacts.artifacts{cnt}  = {{15,{'E22','E23','E26'}},...
     {27,{'E22','E72','E87','E99'}},{39,{'E33','E72'}},{41,{'E22','E26','E72'}}};
 artifacts.badtrials{cnt}  = {43,44,45,53};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_452_sleep';
@@ -324,6 +387,8 @@ artifacts.badtrials{cnt}  = {36,44,45,46,47,48,49,50,51,52,53,54,55,56,...
     57,58,59,60,61,62,63,64,65,66,67};
 artifacts.badchans{cnt}   = {'E2', 'E3', 'E9', 'E23', 'E26', 'E50',...
     'E56', 'E57', 'E62', 'E64', 'E88', 'E101', 'E108', 'E116', 'E122'}; %Mastoid
+artifacts.reref{cnt}      = {'E63', 'E100'};
+
 
 
 
@@ -332,12 +397,16 @@ artifacts.dataset{cnt}    = 'RC_461_sleep';
 artifacts.artifacts{cnt}  = {{38,{'E56','E77','E114'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_462_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -346,12 +415,16 @@ artifacts.dataset{cnt}    = 'RC_471_sleep';
 artifacts.artifacts{cnt}  = {{24,{'E9'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_472_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -361,6 +434,8 @@ artifacts.artifacts{cnt}  = {{59,{'E66','E71','E72','E82'}},...
     {60,{'E66','E71','E72','E82'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_482_sleep';
@@ -368,6 +443,8 @@ artifacts.artifacts{cnt}  = {{39,{'E3','E4','E124','E11','E15',...
     'E18','E19'}}};
 artifacts.badtrials{cnt}  = {55};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -376,6 +453,8 @@ artifacts.dataset{cnt}    = 'RC_491_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_492_sleep';
@@ -383,6 +462,8 @@ artifacts.artifacts{cnt}  = {{58,{'E3', 'E9', 'E10', 'E15', 'E22', 'E23',...
     'E26', 'E57', 'E107', 'E108', 'E114'}}};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 
 
 
@@ -391,10 +472,14 @@ artifacts.dataset{cnt}    = 'RC_511_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {63,64};
 artifacts.badchans{cnt}   = {'E39', 'E57', 'E100', 'E101', 'E107', 'E108'}; %Mastoids
+artifacts.reref{cnt}      = {'E56', 'E99'};
+
 
 cnt = cnt+1;
 artifacts.dataset{cnt}    = 'RC_512_sleep';
 artifacts.artifacts{cnt}  = {};
 artifacts.badtrials{cnt}  = {};
 artifacts.badchans{cnt}   = {};
+artifacts.reref{cnt}      = {'E57', 'E100'};
+
 

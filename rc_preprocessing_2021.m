@@ -141,7 +141,7 @@ for file = 19%1:numel(files)
     cfg_ref.channel         = 'all'; % this is the default
     cfg_ref.reref           = 'yes';
     cfg_ref.refmethod       = 'avg';
-    cfg_ref.refchannel      = {'E57', 'E100'}; %Mastoids
+    cfg_ref.refchannel      = subj_artifacts.reref{dataset};
     data_preproc            = ft_preprocessing(cfg_ref, data_preproc);
     
     
@@ -168,80 +168,15 @@ for file = 19%1:numel(files)
 end
 
 %% Visual inspection of channels
-% % % 
-% 
-% channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
-
+% % % % 
+% % 
+% % channels_wo_face   = {'all', '-E49', '-E48', '-E43', '-E127', '-E126', '-E17', '-E128', '-E32', '-E25', '-E21', '-E14', '-E8', '-E1', '-E125', '-E120', '-E119', '-E113','-VREF', '-E129'};
+% % 
 % cfg_db                          = [];
 % cfg_db.viewmode                 = 'vertical';
 % cfg_db.preproc.baselinewindow   = [-5,15];
 % % cfg_db.latency         = [-5,15];
-% cfg_db.channel                  = channels_wo_face;
+% % cfg_db.channel                  = channels_wo_face;
 % cfg_db.ylim                     = [-20 20];
-% cfg_db                          = ft_databrowser(cfg_db, data_downsamp_250);
-% % % % 
-% %% Artifact detectionahh
-% 
-% path_prep = 'D:\Sleep\DataDownload\PreprocessingBPFilter';
-% files = dir(strcat(path_prep,filesep,'*.mat'));
-% 
-% 
-% for file = 1:numel(files)
-%     
-%     load(files(file).name)
-%     %
-%     cfg_art					= [];
-%     cfg_art.continuous      = 'yes';
-%     %cfg_art.trl             = cfg_trial.trl;
-%     %cfg_art.dataset         = data_preproc;
-%     cfg_art.artfctdef       = [];
-%     
-%     % Z-value based rejection
-%     % This is the one from here: https://www.fieldtriptoolbox.org/tutorial/automatic_artifact_rejection/#examples-for-getting-started
-%     % All those parameters are just what worked for me at some point, dont use
-%     % them necessarily
-%     
-%     
-%     cfg_art.artfctdef.zvalue.channel     = channels_wo_face; % dont incorporate artifact-prone frontal channels
-%     cfg_art.artfctdef.zvalue.trlpadding  = 0;
-%     cfg_art.artfctdef.zvalue.fltpadding  = 1;   % only used for filtering before artifact detection (tutorial: .1)
-%     cfg_art.artfctdef.zvalue.artpadding  = 0.4; % window around artifacts still rejected
-%     cfg_art.artfctdef.zvalue.detrend     = 'yes';
-%     cfg_art.artfctdef.zvalue.bpfilter    = 'yes';
-%     cfg_art.artfctdef.zvalue.bpfreq      = [0.6 30]; % check tutorals for optimal values
-%     cfg_art.artfctdef.zvalue.bpfiltord   = 8;
-%     cfg_art.artfctdef.zvalue.bpfilttype  = 'fir';
-%     cfg_art.artfctdef.zvalue.hilbert     = 'yes';         % ?
-%     cfg_art.artfctdef.zvalue.boxcar      = 0.2;           % ?
-%     cfg_art.artfctdef.zvalue.interactive = 'yes';
-%     cfg_art.artfctdef.zvalue.cutoff      = 0.6;
-%     cfg_art.feedback                     = 'yes';
-%     cfg_art                              = ft_artifact_zvalue(cfg_art,data_preproc);
-%     
-% end
-% % 
-% % % There is also the one from here: 
-% % % https://www.fieldtriptoolbox.org/tutorial/visual_artifact_rejection/#manual-artifact-rejection---display-a-summary
-% % % ...which looks cool but it works differencely than all the
-% % % ft_artifact_xxx functions. It needs data and gives you back lists of
-% % % rejectable trials and channels I think.
-% % % cfg          = [];
-% % % cfg.method   = 'summary';
-% % % cfg.ylim     = [-1e-12 1e-12];
-% % % dummy        = ft_rejectvisual(cfg,dataFIC);
-% % 
-% % % And then there is a fully manual way of detection artifacts, by marking
-% % % them in the databrowser. Here you can also see all the previously
-% % % determined artifacts and doublecheck them. There might be a few mistakes
-% % % in this code, didnt double check:
-% % cfg_db                 = [];
-% % cfg_db.viewmode        = 'vertical';
-% % cfg_db.channel         = channels_wo_face;
-% % % cfg_db.data            = data_preproc;%fullfile(paths.data, 'RC_121_sleep.mff');%Doing now with subject 12, session 1
-% % % cfg_db.blocksize       = 30;		
-% % cfg_db.ylim            = [-120 120];
-% % % cfg_db.selectmode      = 'markartifact';
-% % % cfg_db.artfctdef	   = cfg_art.artfctdef;
-% % cfg_db                 = ft_databrowser(cfg_db, data_preproc);
-% % 
-% % %save(cfg_art, path_artifactdef);
+% cfg_db                          = ft_databrowser(cfg_db, data_preproc);
+% % % 
