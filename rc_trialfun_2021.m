@@ -60,7 +60,7 @@ Events = events;
 
 Events = rmfield(Events, ...
     {'value','duration','begintime','classid','code','relativebegintime',...
-    'sourcedevice','type','mffkeys','mffkeysbackup'});
+    'sourcedevice','type','mffkeys'});
 
 
 % Remove the events that appear to be empty
@@ -201,12 +201,15 @@ save('EventsDescription.mat','AllEvents')
 
 final_trials = Events(~will_be_rejected);
 
-trl_1stColumn = round([final_trials.sample]')-cfg.trialdef.pre*hdr.Fs;
-trl_2ndColumn = round([final_trials.sample]')+cfg.trialdef.post*hdr.Fs;
-trl_3rdColumn = [final_trials.offset]'-cfg.trialdef.pre*hdr.Fs;
+trl_startTime   = round([final_trials.sample]')-cfg.trialdef.pre*hdr.Fs;
+trl_EndTime     = round([final_trials.sample]')+cfg.trialdef.post*hdr.Fs;
+trl_ZeroPoint   = [final_trials.offset]'-cfg.trialdef.pre*hdr.Fs;
+
+trl_condition(strcmp({final_trials.stimulation},'ODOR'))  = 1;
+trl_condition(strcmp({final_trials.stimulation},'VEHICLE'))  = 0;
+
 %add 4th column called trial ID, or something saying either this is Odor or
 %vehicle. later this is going to be saved in the 'trialinfo' parameter 
 % (this needs to be given in numbers, I can use 1 for Odor, 0 for vehicle
 
-trl = [trl_1stColumn,trl_2ndColumn,trl_3rdColumn];
-
+trl = [trl_startTime,trl_EndTime,trl_ZeroPoint,trl_condition'];
