@@ -100,30 +100,31 @@ clearvars -except PairingAll
 %% ------------------------------------------------------------------------
 % Later for checking when doing the pairing
 % -------------------------------------------------------------------------
-path = 'D:\Sleep\';
+% path = '/mnt/disk1/sleep/German_Study/Data/FT_Preprocessing_250/';
 
-files = dir(strcat(path,'*.mat'));
+% files = dir(strcat(path,'*.mat'));
 
-for file = 1:numel(files)
+% for file = 1:numel(files)
     
-    load(strcat(path,files(file).name))
+%     load(strcat(path,files(file).name))
     
-    recording = find(strcmp(PairingAll(:,1), files(file).name(1:6)));
+%     recording = find(strcmp(PairingAll(:,1), files(file).name(1:6)));
     
-    %check that stims correspond to 1 and 0 in the trialinfo
-    pairs = PairingAll{recording,2};
-    idxOdors        = pairs(:,1);
-    idxVehicles     = pairs(:,2);
+%     %check that stims correspond to 1 and 0 in the trialinfo
+%     pairs = PairingAll{recording,2};
+%     idxOdors        = pairs(:,1);
+%     idxVehicles     = pairs(:,2);
     
-    if data_downsamp_250.trialinfo(idxOdors)~= 1
-        error('indexes are wrong')
-        disp(files(file).name(1:6))
-    end
+%     if data_downsamp_250.trialinfo(idxOdors)~= 1
+%         error('indexes are wrong')
+%         disp(files(file).name(1:6))
+%     end
     
-    if data_downsamp_250.trialinfo(idxVehicles)~= 0
-        error('indexes are wrong')
-        disp(files(file).name(1:6))
-    end
+%     if data_downsamp_250.trialinfo(idxVehicles)~= 0
+%         error('indexes are wrong')
+%         disp(files(file).name(1:6))
+%     end
     
-end
+% end
 
+% disp('done')
