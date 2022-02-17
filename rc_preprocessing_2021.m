@@ -22,7 +22,7 @@ paths                       = [];
 paths.root                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
 paths.data                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
 paths.sl_hypnograms         = '/mnt/disk1/sleep/German_Study/Data/Hypnograms';
-paths.save                  = '/mnt/disk1/sleep/Datasets/TrialDef/Preprocessing_250Hz/';
+paths.save                  = '/mnt/disk1/sleep/German_Study/Data/FT_Preprocessing_250/';
 
 files = dir(strcat(paths.data,filesep,'*.mff'));
 
@@ -32,7 +32,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 
 p_ArtifactsDefinition
 
-for file = 19%1:numel(files)
+for file = 19%:numel(files)
     
     data_filename   = files(file).name;
     hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -141,7 +141,7 @@ for file = 19%1:numel(files)
     cfg_ref.channel         = 'all'; % this is the default
     cfg_ref.reref           = 'yes';
     cfg_ref.refmethod       = 'avg';
-    cfg_ref.refchannel      = subj_artifacts.reref{dataset};
+    cfg_ref.refchannel      = artifacts.reref{dataset};
     data_preproc            = ft_preprocessing(cfg_ref, data_preproc);
     
     
