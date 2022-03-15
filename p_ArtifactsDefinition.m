@@ -191,7 +191,7 @@ artifacts.dataset{cnt}    = 'RC_251_sleep';
 % going to be removed
 artifacts.artifacts{cnt}  = {{30,{'E2'}}};
 artifacts.badtrials{cnt}  = {};
-artifacts.badchans{cnt}   = {'E99', 'E100', 'E107'}; %Mastoid
+artifacts.badchans{cnt}   = {'E99', 'E100'}; %Mastoid %removed E107
 artifacts.reref{cnt}      = {'E57', 'E101'};
 
 
