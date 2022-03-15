@@ -38,7 +38,10 @@ VerbalOutput    = cell(size(AllEvents, 2), 4);
 VariablesOut    = {'Dataset', 'Total (#)', 'Rejected (%)', 'Rejected (#)', ...
     'Incomplete cycles (#)', 'Complete cycles (#)', ...
     'Rej. bc artifact (Cycles, #)', 'Rej. bc short (Cycles, #)', ...
-    'Valid trials (#)'};
+    'Valid trials (#)', 'Total Odor (#)', 'Total Vehicle (#)'};
+
+Rejected.TooShort = NaN(size(AllEvents, 2), 1);
+Rejected.Artifact = NaN(size(AllEvents, 2), 1);
 
 for iSubj = 1:size(AllEvents, 2)
     
@@ -110,6 +113,13 @@ for iSubj = 1:size(AllEvents, 2)
     VerbalOutput{iSubj, 7}  = RejectedArtifact;
     VerbalOutput{iSubj, 8}  = RejectedShort;
     VerbalOutput{iSubj, 9}  = NumberTrials - RejectedCycles;
+    VerbalOutput{iSubj, 10} = numel(IdxTrialsOdor(...
+        ~ismember(IdxTrialsOdor, IdxBadTrial)));
+    VerbalOutput{iSubj, 11} = numel(IdxTrialsVehicle(...
+        ~ismember(IdxTrialsVehicle, IdxBadTrial)));
+    
+    Rejected.TooShort(iSubj) = numel(IdxBadBecauseShort);
+    Rejected.Artifact(iSubj) = numel(IdxBadBecauseArtifact);
 
 end
 
