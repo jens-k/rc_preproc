@@ -38,7 +38,7 @@ for recording = 1:size(AllEvents, 2)
     %create a new table/structure with the events that were kept (and the
     %events that are part of the final preprocessed recording)
     
-    KeptEvent_idx           = find([RecordEvents.Rejected] == 0);
+    KeptEvent_idx          = find([RecordEvents.Rejected] == 0);
     KeptEvents              = RecordEvents(KeptEvent_idx);
     
     %Give the kept events a new ID in order to be able to identify the
@@ -96,7 +96,7 @@ for recording = 1:size(AllEvents, 2)
     PairingAll{recording,2} = pairing(pairing_idx,:);
 end
 
-clearvars -except PairingAll
+% clearvars -except PairingAll
 %% ------------------------------------------------------------------------
 % Later for checking when doing the pairing
 % -------------------------------------------------------------------------
