@@ -25,6 +25,8 @@
 file_AllEvents = 'EventsDescription.mat';
 
 
+load('/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/Github/TimeFrequency_ReactivatedMemoryProject/NewPreprocessingAnalysis/keeptrialsAll.mat');
+load('/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/Github/TimeFrequency_ReactivatedMemoryProject/NewPreprocessingAnalysis/PairingTrials_NoOutliers.mat')
 % -------------------------------------------------------------------------
 
 load(file_AllEvents);
@@ -33,7 +35,7 @@ originalSrate = 1000;
 AllKeptEvents = AllEvents;
 
 for recording = 1:size(AllEvents, 2)
-    
+    pairing = [];
     %get the events for this specific recording
     RecordEvents            = AllEvents{2, recording};
 
@@ -53,11 +55,11 @@ for recording = 1:size(AllEvents, 2)
     
     % Find the Odor and vehicle stimulations Indexes in order to start
     % checking the pairing between them
-    Stimulations            = {KeptEvents.stimulation};
-    OdorStim_Idx            = find(strcmp(Stimulations, 'ODOR'));
-    VehicleStim_Idx         = find(strcmp(Stimulations, 'VEHICLE'));
-
-    pairing = zeros(numel(OdorStim_Idx),2);
+    pairs_idx = strcmp(PairingAll(:,1), AllEvents{1, recording});
+    pairs = PairingAll{pairs_idx,2};
+    
+    OdorStim_Idx = pairs(:,1);
+    VehicleStim_Idx = pairs(:,2);
     
     pairing(:,1) = [KeptEvents(OdorStim_Idx).NewID];
     
@@ -67,8 +69,9 @@ for recording = 1:size(AllEvents, 2)
     v_cycleStim = zeros(1,size(KeptEvents,2));
     
     cycle = 0;
-    for odorstim = OdorStim_Idx
+    for  stim = 1:length(OdorStim_Idx)
         
+        odorstim = OdorStim_Idx(stim);
         % find next available vehicle
         Next_vehicles       = find(VehicleStim_Idx > odorstim);
         

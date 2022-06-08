@@ -55,10 +55,10 @@ for file = 26%3:numel(files)
     % thinking of the futher analysis (i.e. TF)
     cfg_trial					= [];
     cfg_trial.dataset           = fullfile(paths.data, data_filename);% Doing now with subject 12, session 1
-    cfg_trial.trialdef.pre		= 15;%5; % all the .trialdef fields are just forwarded to the cfg.trialfun
-    cfg_trial.trialdef.post	    = 20;%15;
+    cfg_trial.trialdef.pre		= 15;%5; % 5 sec for artifact rejection. 15 for processing code to work and TF edge calculation
+    cfg_trial.trialdef.post	    = 20;%15; % 15 sec for artifact rejection. 20 for processing code to work and TF edge calculation
     cfg_trial.epoch_length_sec  = 30;
-    cfg_trial.hypnogram			= fullfile(paths.sl_hypnograms,hyp_filename); % Doing now with subject 12, session 1
+    cfg_trial.hypnogram			= fullfile(paths.sl_hypnograms,hyp_filename); 
     cfg_trial.trialfun          = 'rc_trialfun_2021'; %
     cfg_trial.id                = data_filename(1:6); % unique recording ID for future reference
     cfg_trial.counter           = file;		% to easier find the dataset again later on
