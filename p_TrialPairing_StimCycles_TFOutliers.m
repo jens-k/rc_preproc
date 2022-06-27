@@ -176,7 +176,7 @@ for recording = 1:size(AllKeptEvents, 2)
     Rec_EventCycles = [KeptEvents.cycleStim];
     
     % number of stimulations for the longest stimulation cycle
-    MaxCycle = shorterCycleStims;%max(Rec_EventCycles);
+    MaxCycle =  shorterCycleStims;%max(Rec_EventCycles); %
     
     %get the index in which the last stimulation of the longest cycle is
     %located
@@ -207,4 +207,4 @@ for recording = 1:size(AllKeptEvents, 2)
 end
 
 
-clearvars -except AllKeptEvents
+clearvars -except AllKeptEvents PairingAll

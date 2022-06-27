@@ -30,6 +30,8 @@ file_AllEvents = 'EventsDescription.mat';
 load(file_AllEvents);
 originalSrate = 1000;
 
+AllKeptEvents = AllEvents;
+
 for recording = 1:size(AllEvents, 2)
     
     %get the events for this specific recording
@@ -94,6 +96,8 @@ for recording = 1:size(AllEvents, 2)
     
     PairingAll{recording,1} = AllEvents{1,recording};
     PairingAll{recording,2} = pairing(pairing_idx,:);
+    
+    AllKeptEvents{2,recording} = KeptEvents;
 end
 
 % clearvars -except PairingAll

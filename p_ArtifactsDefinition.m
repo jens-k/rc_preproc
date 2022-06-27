@@ -483,3 +483,87 @@ artifacts.badchans{cnt}   = {};
 artifacts.reref{cnt}      = {'E57', 'E100'};
 
 
+%% Count noisy channels
+
+Nrecordings = numel(artifacts.badchans);
+percBadchans = [];
+for recording = 1:Nrecordings
+    badchans = artifacts.badchans{recording};
+
+    if isempty(badchans)
+        percBadchans(recording) = 0;
+    else
+        percBadchans(recording) = numel(badchans)/111;
+    end
+end
+
+meanpercBadchans = mean(percBadchans)*100;
+stdpercBadchans = std(percBadchans)*100;
+
+%% Count noisy epochs
+
+load('EventsDescription.mat')
+percBadtrials = [];
+
+for recording = 1:Nrecordings
+    RecEvents = AllEvents{2,recording};
+    totalEvents = numel(RecEvents);
+    totaleventsOFF = sum(strcmp({RecEvents.stimulation},'OFF'));
+    
+    totalValidEvents = totalEvents-totaleventsOFF;
+    
+    if isempty(artifacts.badtrials{recording})
+        percBadtrials(recording) = 0;
+    else
+        percBadtrials(recording) = numel(artifacts.badtrials{recording})/totalValidEvents;
+    end
+end
+
+meanpercBadtrials = mean(percBadtrials)*100;
+stdpercBadtrials = std(percBadtrials)*100;
+
+%% Count epochs with specific noisy channels
+
+percBadSpecific = [];
+
+for recording = 1:Nrecordings
+    
+    RecEvents = AllEvents{2,recording};
+    totalEvents = numel(RecEvents);
+    totaleventsOFF = sum(strcmp({RecEvents.stimulation},'OFF'));
+    
+    totalValidEvents = totalEvents-totaleventsOFF;
+
+    Artifacts = artifacts.artifacts{recording};
+    
+    if isempty(Artifacts)
+        percBadSpecific(recording) = 0;
+    else
+        percBadSpecific(recording) = numel(artifacts.artifacts{recording})/totalValidEvents;
+    end
+end
+
+meanpercBadSpecific = mean(percBadSpecific)*100;
+stdpercBBadSpecific = std(percBadSpecific)*100;
+
+%% Count incomplete stimulations 
+
+percIncompleteStims = [];
+
+for recording = 1:Nrecordings
+    
+    RecEvents = AllEvents{2,recording};
+    totalEvents = numel(RecEvents);
+    totaleventsOFF = sum(strcmp({RecEvents.stimulation},'OFF'));
+    
+    totalValidEvents = totalEvents-totaleventsOFF;
+    
+    IncompleteStims = sum(strcmp({RecEvents.ReasonForRejection},'too short 12'))+...
+        sum(strcmp({RecEvents.ReasonForRejection},'too short 15'));
+
+    percIncompleteStims(recording) = IncompleteStims/totalValidEvents;
+    
+end
+
+meanpercIncompleteStimsc = mean(percIncompleteStims)*100;
+stdpercIncompleteStims = std(percIncompleteStims)*100;

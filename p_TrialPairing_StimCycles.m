@@ -22,12 +22,15 @@
 %                               [odor trials, vehicle trials]
 %
 % Parameters
-file_AllEvents = 'EventsDescription.mat';
+file_AllEvents = 'EventsDescription_withTimes_h_m_s';%'EventsDescription.mat';
+
 
 
 % -------------------------------------------------------------------------
 
 load(file_AllEvents);
+
+AllEvents = AllEvents_with_h_m_s;
 originalSrate = 1000;
 
 AllKeptEvents = AllEvents;
@@ -173,7 +176,7 @@ for recording = 1:size(AllKeptEvents, 2)
     Rec_EventCycles = [KeptEvents.cycleStim];
     
     % number of stimulations for the longest stimulation cycle
-    MaxCycle = shorterCycleStims;%max(Rec_EventCycles);
+    MaxCycle = max(Rec_EventCycles);%shorterCycleStims;
     
     %get the index in which the last stimulation of the longest cycle is
     %located
@@ -203,5 +206,8 @@ for recording = 1:size(AllKeptEvents, 2)
     
 end
 
+save('EventsDescription_Cycles.mat','AllKeptEvents')
 
-clearvars -except AllKeptEvents
+
+clearvars -except AllKeptEvents PairingAll
+
