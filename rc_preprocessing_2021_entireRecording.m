@@ -1,9 +1,9 @@
-addpath(genpath('/home/andrea/Documents/Github/rc_preproc/'))
+addpath(genpath('D:\Gits\rc_preproc\'))
 % ft_defaults
 
 % addpath(genpath('C:\Users\lanan\Documents\MATLAB\fieldtrip\'))
 
-addpath('/home/andrea/Documents/MatlabFunctions/fieldtrip/')
+% addpath('/home/andrea/Documents/MatlabFunctions/fieldtrip/')
 ft_defaults
 %% General comments
 % I wrote this code example down there without ever running it; please
@@ -19,10 +19,13 @@ ft_defaults
 
 %server
 paths                       = [];
-paths.root                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
-paths.data                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
-paths.sl_hypnograms         = '/mnt/disk1/sleep/German_Study/Data/Hypnograms';
-paths.save                  = '/mnt/disk1/sleep/Datasets/TrialDef/WholeDatasets/';
+paths.root                  = 'D:\germanStudyData\datasetsSETS\Ori_CueNight';
+paths.data                  = 'D:\germanStudyData\datasetsSETS\Ori_CueNight';
+paths.sl_hypnograms         = 'D:\Gits\EEG_pre_processing\data_specific\GermanData\Hypnograms';
+paths.save                  = 'D:\FT_Preprocessing_250_WHOLE\';
+
+mkdir(paths.save)
+
 
 files = dir(strcat(paths.data,filesep,'*.mff'));
 
@@ -65,7 +68,10 @@ for file = 1:numel(files)
     cfg_preproc.lpfilter            = 'yes';
     cfg_preproc.lpfilttype          = 'fir';
     cfg_preproc.lpfreq              = 30;
-    cfg_preproc.medianfilter        = 'yes'; 
+    
+    warning('Median filter is disabled')
+    
+    cfg_preproc.medianfilter        = 'no';
     cfg_preproc.medianfiltord       = 30;
     
     data_preproc                    = ft_preprocessing(cfg_preproc);
@@ -94,7 +100,7 @@ for file = 1:numel(files)
     cfg_ref.channel         = 'all'; % this is the default
     cfg_ref.reref           = 'yes';
     cfg_ref.refmethod       = 'avg';
-    cfg_ref.refchannel      = subj_artifacts.reref{dataset};
+    cfg_ref.refchannel      = artifacts.reref{dataset};
     data_preproc            = ft_preprocessing(cfg_ref, data_preproc);
     
     
@@ -106,7 +112,7 @@ for file = 1:numel(files)
     
     
     newPath = paths.save;%'D:\Sleep\DataDownload\Preprocessing_250Hz\';
-    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_complete','-v7.3')
+    save(strcat(newPath,data_filename(1:12),'.mat'),'cfg_trial','data_downsamp_250','-v7.3')
 
 
 end

@@ -14,10 +14,10 @@
 %                         array of char)
 
 % Parameters --------------------------------------------------------------
-DataPath = 'D:\germanStudyData\datasetsANDREA\WholeDatasets';
+DataPath = 'D:\germanStudyData\datasetsANDREA\FT_Preprocessing_250';
 SavePath                    = strcat(cd, filesep, 'PrePro_Andrea');
 
-Epoching                    = 0;    % [0, 1] for No or Yes. "0" will 
+Epoching                    = 1;    % [0, 1] for No or Yes. "0" will 
                                     % produce whole datasets (non-epoched)
 Pairing                     = 0;    % [0, 1] for Off or On, respectively. 
                                     % Rejecting all trials can do not fit 
@@ -57,6 +57,15 @@ for iFile = 1:numel(Files)
         
         ValidTrials             = ([SubjectEvents.Rejected] == 0);
         ValidTrials             = SubjectEvents(ValidTrials);
+        
+        
+        if numel(data_downsamp_250.trial) > 1 && ...
+                numel(data_downsamp_250.trial) ~= length(ValidTrials)
+            % Sanity check: If working with already epoched datasets, check
+            % whether ValidTrials and number of epochs are same
+            error('Trigger numbers should be same')
+        end
+        
         
         IdxOdorTrials           = find(strcmp({ValidTrials.stimulation}, 'ODOR'));
         IdxVehicleTrials        = find(strcmp({ValidTrials.stimulation}, 'VEHICLE'));

@@ -1,12 +1,12 @@
 %addpath(genpath('/home/andrea/Documents/Github/rc_preproc/'))
-addpath(genpath('/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/Github/rc_preproc/')) % for stjude server
+addpath(genpath('D:\Gits\rc_preproc\')) % for stjude server
 
 
 % ft_defaults
 
 % addpath(genpath('C:\Users\lanan\Documents\MATLAB\fieldtrip\'))
 % addpath('/home/andrea/Documents/MatlabFunctions/fieldtrip/') % chilean server
-addpath('/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/Github/fieldtrip/') % stjude server
+% addpath('/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/Github/fieldtrip/') % stjude server
 
 
 
@@ -17,25 +17,13 @@ ft_defaults
 
 %% ------     FIRST-TIME SETUP
 % init_rc;
-% paths                       = [];
-% paths.root                  = 'D:\Sleep\DataDownload';
-% paths.data                  = 'D:\Sleep\DataDownload\Recordings\Both';
-% paths.sl_hypnograms         = 'D:\Sleep\DataDownload\Hypnograms';
-% paths.save                  = 'D:\Sleep\DataDownload\Preprocessing_ReRef\';
-
-%server
-% paths                       = [];
-% paths.root                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
-% paths.data                  = '/mnt/disk1/sleep/German_Study/Data/MFF/Sleep';
-% paths.sl_hypnograms         = '/mnt/disk1/sleep/German_Study/Data/Hypnograms';
-% paths.save                  = '/mnt/disk1/sleep/German_Study/Data/FT_Preprocessing_250/';
-
-% for stjude server
 paths                       = [];
-paths.root                  = '/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/SleepData';
-paths.data                  = '/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/SleepData';
-paths.sl_hypnograms         = '/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/Hypnograms';
-paths.save                  = '/research/rgs01/home/clusterHome/asanch24/ReactivatedConnectivity/FT_Preprocessing_250/';
+paths.root                  = 'D:\germanStudyData\datasetsSETS\Ori_CueNight';
+paths.data                  = 'D:\germanStudyData\datasetsSETS\Ori_CueNight';
+paths.sl_hypnograms         = 'D:\Gits\EEG_pre_processing\data_specific\GermanData\Hypnograms';
+paths.save                  = 'D:\FT_Preprocessing_250\';
+
+mkdir(paths.save)
 
 
 files = dir(strcat(paths.data,filesep,'*.mff'));
@@ -46,7 +34,7 @@ files = dir(strcat(paths.data,filesep,'*.mff'));
 
 p_ArtifactsDefinition
 
-for file = 3:numel(files)
+for file = 1:numel(files)
     
     data_filename   = files(file).name;
     hyp_filename    = strcat('s',data_filename(4:5),'_n',data_filename(6),'.txt');
@@ -78,7 +66,8 @@ for file = 3:numel(files)
     cfg_preproc.lpfilter            = 'yes';
     cfg_preproc.lpfilttype          = 'fir';
     cfg_preproc.lpfreq              = 30;
-    cfg_preproc.medianfilter        = 'yes'; 
+        
+    cfg_preproc.medianfilter        = 'no'; 
     cfg_preproc.medianfiltord       = 30;
     
     data_preproc                    = ft_preprocessing(cfg_preproc);
